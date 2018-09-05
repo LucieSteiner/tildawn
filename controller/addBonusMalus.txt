@@ -1,0 +1,17 @@
+<?php
+
+if(isset($_POST["name"])){
+    $cause = getCauseByName($_POST["name"]);
+	if(isset($_POST["src"])){
+		if($_POST['src'] == "player"){
+			addBonusMalusToPlayer($playerId, $cause);
+			header('Location: ../pages/players.php');
+		}
+		else if($_POST['src'])){
+		    addBonusMalusToTeam($teamName, $cause);
+			header('Location: ../pages/teams/index.php');
+		}
+}
+header('Location: ../pages/index.php');
+
+?>
