@@ -29,7 +29,7 @@ if(session_status() == PHP_SESSION_NONE){
                         </li>
                         <li><a href="index.php?role=grotte"><i class="fa fa-user fa-fw"></i> Grotte</a>
                         </li>
-                        <li><a href="index.php?role=bureau"><i class="fa fa-user fa-fw"></i> Bureau des points</a>
+                        <li><a href="index.php?role=bureau"><i class="fa fa-user fa-fw"></i> Bureau</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->

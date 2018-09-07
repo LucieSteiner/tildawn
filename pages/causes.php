@@ -1,16 +1,9 @@
 <!DOCTYPE html>
 <?php
+require("../controller/azure.php");
 //getCauses()-> name, category, value
-$causes = array(
-    array('Tricherie', 'Malus', 1000),
-	array('Manque bénévolat', 'Malus', 500),
-	array('Sourire sympatique', 'Bonus', 200),
-	array('Déguisement', 'Bonus', 500),
-	array('Violence', 'Malus', 1000),
-	array('Fairplay', 'Bonus', 500)
+$causes = getCauses(null);
 
-
-);
 //edit ->dialog
 //delete -> dialog
 //new -> dialog
@@ -97,9 +90,9 @@ $causes = array(
                                             else{
 												echo '<tr class="even">';
 											}
-                                            echo '<td>'.$cause[0].'</td>';
-                               				echo '<td>'.$cause[1].'</td>';
-											echo '<td>'.$cause[2].'</td>';
+                                            echo '<td>'.$cause['name'].'</td>';
+                               				echo '<td>'.$cause['category'].'</td>';
+											echo '<td>'.$cause['value'].'</td>';
                                             echo '<td style="text-align: center;"><button type="button" class="btn btn-warning btn-circle"><i class="fa fa-edit"></i></button>   <button type="button" class="btn btn-danger btn-circle"><i class="fa fa-trash-o"></i></button>';							
 										    $parity = $parity + 1 % 2;
 										}

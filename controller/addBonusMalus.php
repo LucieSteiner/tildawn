@@ -12,7 +12,7 @@ if(isset($_POST["name"]) && isset($_POST['id'])){
 		}
 		else if($_POST['src'] == "team"){
 		    addBonusMalusToTeam($_POST['id'], $cause);
-			header('Location: ../pages/teams/index.php');
+			header('Location: ../pages/teams.php');
 		}
 	}
 }else{

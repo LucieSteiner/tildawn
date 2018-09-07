@@ -2,15 +2,13 @@
 <?php
 require("../controller/azure.php");
 $players = getPlayers();
-//getPlayers -> id, amulet, firstname, lastname, team, score)
+//getPlayers -> (id, amulet, firstname, lastname, team, score)
 
 $causesBonus = getCauses("Bonus");
 $causesMalus = getCauses("Malus");
 //getCauses -> cause, category, value
 
-//addBonus
-//addMalus
-//open dialog and fill form, then call to function
+//add link to player information
 //export scoreboard (format?)
 ?>
 <html lang="en">
@@ -84,6 +82,7 @@ $causesMalus = getCauses("Malus");
                                         <th>Last name</th>
                                         <th>Team</th>
                                         <th>Score</th>
+										<th>Score with Team</th>
 										<th>Actions</th>
                                     </tr>
                                 </thead>
@@ -97,13 +96,14 @@ $causesMalus = getCauses("Malus");
                                             else{
 												echo '<tr class="even">';
 											}
-                                            echo '<td>'.$player[0].'</td>';
-                               				echo '<td>'.$player[1].'</td>';
-                                            echo '<td>'.$player[2].'</td>';
-                                            echo '<td>'.$player[3].'</td>';
-                                            echo '<td>'.$player[4].'</td>';
-                                            echo '<td style="text-align:center;"><button type="button" class="btn btn-success btn-circle" data-toggle="modal" data-player="'.$player[0].'" data-target="#addBonus"><i class="fa fa-plus"></i></button>   <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-player="'.$player[0].'" data-target="#addMalus"><i class="fa fa-minus"></i></button></td>';							
-										    $parity = $parity + 1 % 2;
+                                            echo '<td>'.$player['amulet'].'</td>';
+                               				echo '<td>'.$player['firstname'].'</td>';
+                                            echo '<td>'.$player['lastname'].'</td>';
+                                            echo '<td>'.$player['team'].'</td>';
+                                            echo '<td>'.$player['score'].'</td>';
+											echo '<td>'.calculateWeightedScore($player).'</td>';
+                                            echo '<td style="text-align:center;"><button type="button" class="btn btn-success btn-circle" data-toggle="modal" data-player="'.$player['id'].'" data-target="#addBonus"><i class="fa fa-plus"></i></button>   <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-player="'.$player['id'].'" data-target="#addMalus"><i class="fa fa-minus"></i></button></td>';							
+										    echo '</tr>';
 										}
 								    ?>
 									
@@ -123,7 +123,7 @@ $causesMalus = getCauses("Malus");
 
 											<div class="modal-body">
 													<div class="form-group">
-														<select name="name" class="form-control" onchange="fillValue(this.value)">
+														<select name="name" class="form-control">
 															<?php foreach($causesBonus as $cause){?>
 															<option><?php echo $cause["name"]; ?></option>
 															<?php };
@@ -215,10 +215,10 @@ $causesMalus = getCauses("Malus");
     $(document).ready(function() {
         $('#dataTables-example').DataTable({
             responsive: true,
-			order: [[4, 'desc']],
+			order: [[5, 'desc']],
 			"columnDefs": [
-				{ "orderable": false, "targets": 5 },
-				{ "width": "5%", "targets": 5 }
+				{ "orderable": false, "targets": 6 },
+				{ "width": "5%", "targets": 6 }
 			]
         });
     });

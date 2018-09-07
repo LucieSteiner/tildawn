@@ -250,11 +250,11 @@ $nbPlayersByTeam = getNbPlayersByTeam();
         Morris.Donut({
 			element: 'donut-chart',
 			data: [
-				{label: "Caserne", value: <?php echo $nbPlayersByTeam[2];?>, color: "#d9534f"},
-				{label: "Usine", value: <?php echo $nbPlayersByTeam[3];?>, color: "#f0ad4e"},
-				{label: "Zombie", value: <?php echo $nbPlayersByTeam[4];?>, color: "#a8b4bd"},
-				{label: "Abattoirs", value: <?php echo $nbPlayersByTeam[0];?>, color: "#5cb85c"},
-				{label: "Asile", value: <?php echo $nbPlayersByTeam[1];?>, color: "#337ab7"}
+				{label: "Caserne", value: <?php echo $nbPlayersByTeam["Caserne"];?>, color: "#d9534f"},
+				{label: "Usine", value: <?php echo $nbPlayersByTeam["Usine"];?>, color: "#f0ad4e"},
+				{label: "Zombie", value: <?php echo $nbPlayersByTeam["Zombie"];?>, color: "#a8b4bd"},
+				{label: "Abattoirs", value: <?php echo $nbPlayersByTeam["Abattoirs"];?>, color: "#5cb85c"},
+				{label: "Asile", value: <?php echo $nbPlayersByTeam["Asile"];?>, color: "#337ab7"}
 			],
 			resize: true,
 			redraw: true

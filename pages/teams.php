@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <?php 
+require("../controller/azure.php");
 //getTeams -> name, score
-$teams = array(
-	array("Usine", 2000),
-	array("Abattoirs", 1000),
-	array("Caserne", 1200),
-    array("Asile", 5000),
-	array("Zombie", 10000)
-)
-//add bonus
-//add malus
-//create dialog, fill form call function
+$teams = getTeams();
+
+$causesBonus = getCauses("Bonus");
+$causesMalus = getCauses("Malus");
+//getCauses -> cause, category, value
+
+//add link to team information
 //export scoreboard (format?)
 ?>
 <html lang="en">
@@ -86,25 +84,85 @@ $teams = array(
                                 </thead>
                                 <tbody>
 								    <?php 
-									    $parity = 1;
 									    foreach ($teams as $team){
-										    if($parity == 1){
-												echo '<tr class="odd">';
-											}
-                                            else{
-												echo '<tr class="even">';
-											}
-                                            echo '<td>'.$team[0].'</td>';
-                               				echo '<td>'.$team[1].'</td>';
-                                            echo '<td style="text-align: center;"><button type="button" class="btn btn-success btn-circle"><i class="fa fa-plus"></i></button>   <button type="button" class="btn btn-danger btn-circle"><i class="fa fa-minus"></i></button></td>';							
-										    $parity = $parity + 1 % 2;
+										    echo '<tr>';
+                                            echo '<td>'.$team['name'].'</td>';
+                               				echo '<td>'.$team['score'].'</td>';
+                                            echo '<td style="text-align: center;"><button type="button" class="btn btn-success btn-circle" data-toggle="modal" data-player="'.$team['name'].'" data-target="#addBonus"><i class="fa fa-plus"></i></button>   <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-player="'.$team['name'].'" data-target="#addMalus"><i class="fa fa-minus"></i></button></td>';							
+										    echo '</tr>';
 										}
 								    ?>
 									
                                 </tbody>
                             </table>
                             <!-- /.table-responsive -->
-                           
+                           <!-- Modal Bonus -->
+                            <div class="modal fade" id="addBonus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">Add Bonus to Team</h4>
+                                        </div>
+										<form name="bonus" role="form" method="post" action="../controller/addBonusMalus.php">
+
+											<div class="modal-body">
+													<div class="form-group">
+														<select name="name" class="form-control">
+															<?php foreach($causesBonus as $cause){?>
+															<option><?php echo $cause["name"]; ?></option>
+															<?php };
+															?>
+														</select>
+													</div>
+													<input type="hidden" class="id" name="id" value="">
+													<input type="hidden" name="src" value="team">
+												
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+												<button type="submit" class="btn btn-primary">Save</button>
+											</div>
+										</form>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+							<!-- Modal Malus -->
+                            <div class="modal fade" id="addMalus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">Add Malus to Team</h4>
+                                        </div>
+										<form name="malus" role="form" method="post" action="../controller/addBonusMalus.php">
+										<div class="modal-body">
+                                        
+											    <div class="form-group">
+													<select name="name" class="form-control" onchange="fillValue(this.value)">
+														<?php foreach($causesMalus as $cause){?>
+														<option><?php echo $cause["name"]; ?></option>
+														<?php };
+														?>
+													</select>
+												</div>
+												<input type="hidden" class="id" name="id" value="">
+												<input type="hidden" name="src" value="team">
+										
+										</div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+										</div>
+										</form>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+                        
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -152,6 +210,14 @@ $teams = array(
         });
     });
     </script>
+	<script>
+	$('#addBonus').on('show.bs.modal', function (event){
+        var button = $(event.relatedTarget)
+        var player = button.data('player')
+		var modal = $(this)
+        modal.find('.modal-body .id').val(player)
+	})
+	</script>
 
 </body>
 

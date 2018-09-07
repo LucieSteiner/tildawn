@@ -1,25 +1,8 @@
 <!DOCTYPE html>
 <?php
+require("../controller/bureau.php");
+$player = getPlayer($_GET['id']);
 
-if(isset($_GET['id'])){
-	
-	//get player information in DB
-	$player = array(
-		"amulet" => "POS12", 
-		"firstname" => "Darlene", 
-		"lastname" => "Alderson", 
-		"gender" => "Femme", 
-		"group" => "Covatannaz", 
-		"team" => "Zombie", 
-		"score" => 100000, 
-		"nbDeaths" => 2, 
-		"nbKills" => 4, 
-		"nbEnemyLivesGiven" => 10, 
-		"nbOwnLivesTaken" => 3, 
-		"nbCheatersCaught" => 0, 
-		"nbTimesArrested" => 3
-	);
-}
 
 ?>
 <html lang="en">
@@ -146,6 +129,10 @@ if(isset($_GET['id'])){
 										<td> <?php echo $player['score']; ?> </td>
 									</tr>
 									<tr>
+									    <th> Current Weighted Score </th>
+										<td> <?php echo calculateWeightedScore($player); ?> </td>
+									</tr>
+									<tr>
 									    <th> # of Deaths </th>
 										<td> <?php echo $player['nbDeaths']; ?> </td>
 									</tr>
@@ -177,7 +164,35 @@ if(isset($_GET['id'])){
 					</div>
 				</div>
 			</div>
+			<!-- Modal Amulet -->
+			<div class="modal fade" id="lives" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="myModalLabel">Buy Lives</h4>
+						</div>
+						<form name="lives" role="form" method="post" action="../controller/points.php">
 
+							<div class="modal-body">
+									<div class="form-group">
+										<label for="nbLives">Number of Lives</label>
+										<input type="number" name="nbLives" autofocus>
+									</div>
+									<input type="hidden" name="id" value="<?php echo $player['id']; ?>">
+									<input type="hidden" name="src" value="buy-lives">
+								
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+								<button type="submit" class="btn btn-primary">Ok</button>
+							</div>
+						</form>
+					</div>
+					<!-- /.modal-content -->
+				</div>
+				<!-- /.modal-dialog -->
+			</div>		
 				
                     
 				    	
@@ -222,6 +237,17 @@ if(isset($_GET['id'])){
         });
     });
     </script>
+	<script>
+    $(window).on('load',function(){
+		<?php if(isset($_GET['src'])){
+			if($_GET['src'] == 'give-lives'){?>
+				 $('#lives').modal('show');
+			<?php
+			}
+		}?>
+       
+    });
+	</script>
 
 </body>
 

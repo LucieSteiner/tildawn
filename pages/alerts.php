@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <?php
+require("../controller/azure.php");
+$alerts = getAlerts();
 
-$alerts = array(
-    array('Indice', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.', 'Active'),
-	array('Annonce', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.', 'Inactive'),
-	array('Météo', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.', 'Active'),
-	array('Nouvel indice', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.', 'Active'),
-	array('Fin du jeu', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.', 'Inactive')
-
-)
+//toggle status => form confirmation 
+//delete => form confirmation
+//new => form
 
 ?>
 <html lang="en">
@@ -77,23 +74,19 @@ $alerts = array(
                                     <tr>
                                         <th>Title</th>
 										<th>Text</th>
+										<th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 								    <?php 
-									    $parity = 1;
 									    foreach ($alerts as $alert){
-										    if($parity == 1){
-												echo '<tr class="odd">';
-											}
-                                            else{
-												echo '<tr class="even">';
-											}
-                                            echo '<td>'.$alert[0].'</td>';
-                               				echo '<td>'.$alert[1].'</td>';
-                                            echo '<td style="text-align: center;"><button type="button" class="btn btn-danger btn-circle"><i class="fa fa-trash-o"></i></button></td>';							
-										    $parity = $parity + 1 % 2;
+										    echo '<tr>';
+                                            echo '<td>'.$alert['title'].'</td>';
+                               				echo '<td>'.$alert['text'].'</td>';
+											echo '<td>'.$alert['status'].'</td>';
+                                            echo '<td style="text-align: center;"><button type="button" class="btn btn-warning btn-circle"><i class="fa fa-power-off"></i></button>    <button type="button" class="btn btn-danger btn-circle"><i class="fa fa-trash-o"></i></button></td>';							
+										    echo '</tr>';
 										}
 								    ?>
 									
@@ -140,7 +133,7 @@ $alerts = array(
             responsive: true,
 			order: [[1, 'asc']],
 			"columnDefs": [
-				{ "orderable": false, "targets": 2 },
+				{ "orderable": false, "targets": 3 },
 				{ "width": "5%", "targets": 2 },
 				{ "width": "80%", "targets": 1}
 			],

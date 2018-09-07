@@ -1,20 +1,8 @@
 <!DOCTYPE html>
 <?php
-$objects = array(
-    array("Table", 200, "Usine"),
-	array("Pantoufle", 450, "-"),
-	array("Licorne", 10000, "Asile"),
-	array("Drogue", 10, "Caserne"),
-	array("Amour", 500, "Abattoirs"),
-	array("Vocation", 2000, "Usine"),
-	array("Amis", 150, "-"),
-	array("Lampadaire", 250, "-"),
-	array("Mort", 0, "Zombie"),
-	array("Poussette", 471, "Asile"),
-	array("Fleurs", 200, "Caserne"),
-	array("Piège à loup", 1000, "-")
+require('../controller/bureau.php');
+$objects = getObjects();
 
-);
 
 
 ?>
@@ -95,22 +83,17 @@ $objects = array(
 								    <?php 
 									    $parity = 1;
 									    foreach ($objects as $object){
-										    if($parity == 1){
-												echo '<tr class="odd">';
-											}
-                                            else{
-												echo '<tr class="even">';
-											}
-                                            echo '<td>'.$object[0].'</td>';
-                               				echo '<td>'.$object[1].'</td>';
-											echo '<td>'.$object[2].'</td>';
+										    echo '<tr>';
+                                            echo '<td>'.$object['name'].'</td>';
+                               				echo '<td>'.$object['value'].'</td>';
+											echo '<td>'.$object['foundby'].'</td>';
 											
                                             echo '<td style="text-align: center;">';
-											if($object[2] == "-"){
+											if($object['foundby'] == "-"){
 												echo '<button type="button" class="btn btn-success btn-circle"><i class="fa fa-arrow-right"></i></button>';
 											}
 											echo '</td>';							
-										    $parity = $parity + 1 % 2;
+										    echo '</tr>';
 										}
 								    ?>
 									

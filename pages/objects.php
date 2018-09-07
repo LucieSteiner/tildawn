@@ -1,22 +1,10 @@
 <!DOCTYPE html>
 <?php
-//getObjects ->name, value, foundby 
-$objects = array(
-    array("Table", 200, "Usine"),
-	array("Pantoufle", 450, "-"),
-	array("Licorne", 10000, "Asile"),
-	array("Drogue", 10, "Caserne"),
-	array("Amour", 500, "Abattoirs"),
-	array("Vocation", 2000, "Usine"),
-	array("Amis", 150, "-"),
-	array("Lampadaire", 250, "-"),
-	array("Mort", 0, "Zombie"),
-	array("Poussette", 471, "Asile"),
-	array("Fleurs", 200, "Caserne"),
-	array("Piège à loup", 1000, "-")
+require('../controller/azure.php');
+//getObjects ->id, name, value, foundby 
+$objects = getObjects();
 
-);
-//export (format?)
+//add export (format?)
 //edit (value ou foundby) -> dialog
 
 ?>
@@ -101,9 +89,9 @@ $objects = array(
                                             else{
 												echo '<tr class="even">';
 											}
-                                            echo '<td>'.$object[0].'</td>';
-                               				echo '<td>'.$object[1].'</td>';
-											echo '<td>'.$object[2].'</td>';
+                                            echo '<td>'.$object['name'].'</td>';
+                               				echo '<td>'.$object['value'].'</td>';
+											echo '<td>'.$object['foundby'].'</td>';
                                             echo '<td style="text-align: center;"><button type="button" class="btn btn-warning btn-circle"><i class="fa fa-edit"></i></button></td>';							
 										    $parity = $parity + 1 % 2;
 										}

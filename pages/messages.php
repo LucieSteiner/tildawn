@@ -1,14 +1,9 @@
 <!DOCTYPE html>
 <?php
-//getMessages -> title, text, status
-$messages = array(
-    array('Indice', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.', 'Active'),
-	array('Annonce', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.', 'Inactive'),
-	array('Météo', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.', 'Active'),
-	array('Nouvel indice', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.', 'Active'),
-	array('Fin du jeu', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.', 'Inactive')
+require("../controller/azure.php");
+$messages = getMessages();
+//getMessages -> id, title, text, status
 
-)
 //new message -> dialog
 //activate message / deactivate message -> confirmation + function
 //delete -> confirmation + function
@@ -85,19 +80,13 @@ $messages = array(
                                 </thead>
                                 <tbody>
 								    <?php 
-									    $parity = 1;
 									    foreach ($messages as $message){
-										    if($parity == 1){
-												echo '<tr class="odd">';
-											}
-                                            else{
-												echo '<tr class="even">';
-											}
-                                            echo '<td>'.$message[0].'</td>';
-                               				echo '<td>'.$message[1].'</td>';
-											echo '<td>'.$message[2].'</td>';
+										    echo '<tr>';
+                                            echo '<td>'.$message['title'].'</td>';
+                               				echo '<td>'.$message['text'].'</td>';
+											echo '<td>'.$message['status'].'</td>';
                                             echo '<td style="text-align: center;"><button type="button" class="btn btn-warning btn-circle"><i class="fa fa-power-off"></i></button>   <button type="button" class="btn btn-danger btn-circle"><i class="fa fa-trash-o"></i></button></td>';							
-										    $parity = $parity + 1 % 2;
+										    echo '</tr>';
 										}
 								    ?>
 									

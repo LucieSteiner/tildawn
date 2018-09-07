@@ -34,15 +34,15 @@
 </head>
 <body>
 <?php require("nav.php");?>
-<div id="wrapper">
-<div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">Dashboard</h1>
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
+	<div id="wrapper">
+		<div id="page-wrapper">
+			<div class="row">
+				<div class="col-lg-12">
+					<h1 class="page-header">Dashboard</h1>
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
 			<div class="row">
 				<div class="col-lg-4">
 					<a href="#"><!-- TODO: add popup -->
@@ -50,13 +50,13 @@
 					</a>	
 				</div>
 				<div class="col-lg-4">
-				    <a href="#"><!-- TODO: add popup -->
+					<a href="#"><!-- TODO: add popup -->
 						<button type="button" style="padding:10%;" class="btn btn-primary btn-block btn-lg">Receive Amulet</button>
 					</a>
 				</div>
 				<div class="col-lg-4">
 					<a href="objectsBureau.php">
-						<button type="button" style="padding:10%;" class="btn btn-block btn-lg btn-warning">Receive Object</button>
+						<button type="button" style="padding:10%;" class="btn btn-block btn-lg btn-info">Receive Object</button>
 					</a>
 				</div>
 			</div>
@@ -64,31 +64,57 @@
 			<div class="row">
 				<div class="col-lg-4">
 					<a href="#"><!-- TODO: add popup to ask for amulet then redirect to player -->
-						<button type="button" style="padding:10%;" class="btn btn-block btn-lg btn-success">Give Lives</button>
+						<button type="button" style="padding:10%;" class="btn btn-block btn-lg btn-success" data-toggle="modal" data-src="give-lives" data-target="#amulet">Give Lives</button>
 					</a>
 				</div>
 				<div class="col-lg-4">
 					<a href="#"><!-- TODO: add popup to ask for amulet then redirect to player -->
-						<button type="button" style="padding:10%;" class="btn btn-block btn-lg btn-primary">Give Amulet Back</button>
+						<button type="button" style="padding:10%;" class="btn btn-block btn-lg btn-primary" data-toggle="modal" data-src="give-amulet" data-target="#amulet">Give Amulet Back</button>
 					</a>
 				</div>
 				<div class="col-lg-4">
 					<a href="#"><!-- TODO: add popup to ask for amulet then redirect to player -->
-						<button type="button" style="padding:2%;" class="btn btn-block btn-lg btn-info">Change Team</button>
+						<button type="button" style="padding:2%;" class="btn btn-block btn-lg btn-warning" data-toggle="modal" data-src="change-team" data-target="#amulet">Change Team</button>
 					</a><br>
 					
 					
 					<a href="#"><!-- TODO: add popup to ask for amulet then redirect to player -->
-						<button type="button" style="padding:2%;" class="btn btn-block btn-lg btn-danger">Arrest</button>
+						<button type="button" style="padding:2%;" class="btn btn-block btn-lg btn-danger"data-toggle="modal" data-src="arrest" data-target="#amulet">Arrest</button>
 					</a>
 				</div>
 			</div>
-			
-			
-            
-        </div>
-        <!-- /#page-wrapper -->
-</div>
+					
+			<!-- Modal Amulet -->
+			<div class="modal fade" id="amulet" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="myModalLabel">Enter Amulet Number</h4>
+						</div>
+						<form name="amulet" role="form" method="post" action="../controller/amuletToId.php">
+
+							<div class="modal-body">
+									<div class="form-group">
+										<input type="text" name="amulet" autofocus>
+									</div>
+									<input type="hidden" class="src" name="src" value="">
+								
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+								<button type="submit" class="btn btn-primary">Ok</button>
+							</div>
+						</form>
+					</div>
+					<!-- /.modal-content -->
+				</div>
+				<!-- /.modal-dialog -->
+			</div>		
+					
+		</div>
+			<!-- /#page-wrapper -->
+	</div>
 </body>
 <!-- jQuery -->
     <script src="../vendor/jquery/jquery.min.js"></script>
@@ -106,3 +132,12 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
+	<script>
+	$('#amulet').on('show.bs.modal', function (event){
+        var button = $(event.relatedTarget)
+        var src = button.data('src')
+		var modal = $(this)
+        modal.find('.modal-body .src').val(src)
+		modal.find('[autofocus]').focus();
+	})
+	</script>
