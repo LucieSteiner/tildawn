@@ -126,3 +126,9 @@ INSERT INTO Objects(name, value, main)
 	("Reposoir", 90, FALSE),
 	("Barette", 90, FALSE);
 	
+	
+INSERT INTO Alerts(title, text)
+  VALUES
+    ("Interruption momentanée du jeu", "Tout le monde en zone NEUTRE. Infos à suivre."),
+	("ARRET DU JEU", "Tout le monde au point de rassemblement. Restez groupés!");
+	

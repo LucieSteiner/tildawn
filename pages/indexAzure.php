@@ -1,5 +1,6 @@
 <?php
 require("../controller/azure.php");
+
 //getBestTeamScore()
 //getBestPlayerScore()
 //getNbActiveAlerts()
@@ -8,6 +9,7 @@ require("../controller/azure.php");
 //getNbCauses()
 //getNbPlayersByTeam()
 $nbPlayersByTeam = getNbPlayersByTeam();
+$teams = getTeams();
 //getTeamScoreOverTime -> a voir plus tard
 
 
@@ -197,11 +199,11 @@ $nbPlayersByTeam = getNbPlayersByTeam();
 			<div class="col-lg-8">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<i class="fa fa-bar-chart-o fa-fw"></i> Team Scores Over Time
+						<i class="fa fa-bar-chart-o fa-fw"></i> Team Scores 
 					</div>
 					<!-- /.panel-heading -->
 					<div class="panel-body">
-						<div id="line-chart"></div>
+						<div id="bar-chart"></div>
 					</div>
 					<!-- /.panel-body -->
 				</div>
@@ -245,33 +247,28 @@ $nbPlayersByTeam = getNbPlayersByTeam();
     <script src="../dist/js/sb-admin-2.js"></script>
 	
 	<script>
-	
 	$(document).ready(function() {
         Morris.Donut({
 			element: 'donut-chart',
 			data: [
-				{label: "Caserne", value: <?php echo $nbPlayersByTeam["Caserne"];?>, color: "#d9534f"},
-				{label: "Usine", value: <?php echo $nbPlayersByTeam["Usine"];?>, color: "#f0ad4e"},
-				{label: "Zombie", value: <?php echo $nbPlayersByTeam["Zombie"];?>, color: "#a8b4bd"},
-				{label: "Abattoirs", value: <?php echo $nbPlayersByTeam["Abattoirs"];?>, color: "#5cb85c"},
-				{label: "Asile", value: <?php echo $nbPlayersByTeam["Asile"];?>, color: "#337ab7"}
+				{label: "Caserne", value: <?php echo $nbPlayersByTeam[3]['nb'];?>, color: "#d9534f"},
+				{label: "Usine", value: <?php echo $nbPlayersByTeam[1]['nb'];?>, color: "#f0ad4e"},
+				{label: "Zombie", value: <?php echo $nbPlayersByTeam[4]['nb'];?>, color: "#a8b4bd"},
+				{label: "Abattoirs", value: <?php echo $nbPlayersByTeam[2]['nb'];?>, color: "#5cb85c"},
+				{label: "Asile", value: <?php echo $nbPlayersByTeam[0]['nb'];?>, color: "#337ab7"}
 			],
 			resize: true,
 			redraw: true
         });
-	
-		Morris.Line({
-			element: 'line-chart',
+		Morris.Bar({
+			element: 'bar-chart',
 			data: [
-			    { y: '2018-09-15 18:00', a: 0, b: 0, c: 0, d: 0, e: 0 },
-				{ y: '2018-09-15 19:00', a: 100, b: 0, c: 50, d: 20, e: 100 },
-				{ y: '2018-09-15 20:00', a: 200, b: 200, c: 70, d: 40, e: 400 },
-				{ y: '2018-09-15 21:00', a: 300, b: 200, c: 130, d: 80, e: 700 },
-				{ y: '2018-09-15 22:00', a: 400, b: 200, c: 250, d: 160, e: 400 },
-				{ y: '2018-09-15 23:00', a: 200, b: 200, c: 261, d: 320, e: 400 },
-				{ y: '2018-09-16 00:00', a: 220, b: 700, c: 430, d: 640, e: 600 },
-				{ y: '2018-09-16 01:00', a: 210, b: 700, c: 620, d: 1280, e: 600 },
-				{ y: '2018-09-16 02:00', a: 470, b: 500, c: 892, d: 800, e: 600 }
+			  { y: '', 
+			  a: <?php echo $teams[3]['score'];?>, 
+			  b: <?php echo $teams[1]['score'];?>, 
+			  c: <?php echo $teams[4]['score'];?>, 
+			  d: <?php echo $teams[2]['score'];?>, 
+			  e: <?php echo $teams[0]['score'];?>, }
 			],
 			xkey: 'y',
 			ykeys: ['a', 'b', 'c', 'd', 'e'],
@@ -279,9 +276,11 @@ $nbPlayersByTeam = getNbPlayersByTeam();
 			lineColors: ['#d9534f','#f0ad4e', '#a8b4bd', '#5cb85c', '#337ab7'],
 			lineWidth: '3px',
 			resize: true,
-			redraw: true
-			
-		});
+			redraw: true,
+			hideHover: true
+		  });
+
+		
     });
     </script>
 </html>

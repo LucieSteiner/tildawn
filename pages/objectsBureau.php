@@ -64,9 +64,6 @@ $objects = getObjects();
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <button type="button" class="btn btn-primary">Export All Objects</button>
-							<button type="button" class="btn btn-primary">Export Found Objects</button>
-							<button type="button" class="btn btn-primary">Export Not Found Objects</button>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">

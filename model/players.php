@@ -86,6 +86,13 @@ function getPlayersByTeam($teamId){
     return fetch_result($res);
 
 }
+function countPlayersByTeam(){
+	$link = connect();
+    $res = mysqli_query($link, "select teamId, count(*) as nb from players group by teamId");
+    
+
+    return fetch_result($res);
+}
 //returns true if edition succeeded, false otherwise
 //points can be positive or negative
 //another function should be called to increase/decrease counters
@@ -99,7 +106,7 @@ function editPlayerScore($playerId, $points, $cause){
 function setPlayerAmulet($playerId, $amulet){
     $link = connect();
 	
-    mysqli_query($link, 'update players set `amulet`='. $amulet .' where `id`='. $playerId.';');
+    mysqli_query($link, 'update players set `amulet`="'. $amulet .'" where `id`='. $playerId.';');
 
     return mysqli_affected_rows($link);
 }
@@ -111,7 +118,7 @@ function addBonusMalusToPlayer($playerId, $cause){
 	//ajouter une entrée à la table specialplayerlog
 	$link = connect();
 	
-	mysqli_query($link, 'insert into specialPlayerLog(causeId, playerId, scoreImpact) ('.$cause['id'].', '.$playerId.', '.$cause['value'].');');
+	mysqli_query($link, 'insert into specialPlayerLog(causeId, playerId, scoreImpact) VALUES ('.$cause['id'].', '.$playerId.', '.$cause['value'].');') or die(mysqli_error($link));
     return mysqli_affected_rows($link);
 }
 

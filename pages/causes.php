@@ -82,19 +82,14 @@ $causes = getCauses(null);
                                 </thead>
                                 <tbody>
 								    <?php 
-									    $parity = 1;
+									    
 									    foreach ($causes as $cause){
-										    if($parity == 1){
-												echo '<tr class="odd">';
-											}
-                                            else{
-												echo '<tr class="even">';
-											}
+										    echo '<tr>';
                                             echo '<td>'.$cause['name'].'</td>';
                                				echo '<td>'.$cause['category'].'</td>';
 											echo '<td>'.$cause['value'].'</td>';
                                             echo '<td style="text-align: center;"><button type="button" class="btn btn-warning btn-circle" data-toggle="modal" data-target="#editCause" data-id="'. $cause['id'] .'" data-name="'. $cause['name'].'" data-value="'. $cause['value'] .'"><i class="fa fa-edit"></i></button>   <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#deleteCause" data-id="'. $cause['id'] .'" data-name="'. $cause['name'].'"><i class="fa fa-trash-o"></i></button>';							
-										    $parity = $parity + 1 % 2;
+										    echo '</tr>';
 										}
 								    ?>
 									

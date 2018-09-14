@@ -41,63 +41,32 @@ function getBestPlayerScore(){
 
 //Dashboard
 function getNbActiveAlerts(){
-	$counter = 0;
-	$alerts = getAllAlerts();
-	foreach($alerts as $alert){
-		if($alert['status'] == "Active"){
-			$counter += 1;
-		}
-	}
-	return $counter;
+	return countActiveAlerts()[0]['nb'];
 	
 }
 
 //Dashboard
 function getNbActiveMessages(){
-	$counter = 0;
-	$messages = getAllMessages();
-	foreach($messages as $message){
-		if($message['status'] == "Active"){
-			$counter += 1;
-		}
-	}
-	return $counter;
+
+	return countActiveMessages()[0]['nb'];
+
 }
 
 //Dashboard
 function getNbFoundObjects(){
-	$counter = 0;
-	$objects = getAllObjects();
-	foreach ($objects as $object){
-		if ($object["foundby"] != NULL){
-			$counter += 1;
-		}
-	}
-	return $counter;
+	return countFoundObjects()[0]['nb'];
 	
 }
 
 //Dashboard
 function getNbCauses(){
-	$causes = getAllCauses();
-	return count($causes);
+	return countCauses()[0]['nb'];
 }
 
 //Dashboard
 function getNbPlayersByTeam(){
-	$teams = getAllTeams();
-	$players = getAllPlayers();
-	$result = array();
-	foreach ($teams as $team){
-	    $result[$team['name']] = 0;
-	    foreach ($players as $player){
-		    if($player['team'] == $team['name']){
-				$result[$team['name']] += 1;
-			}
-		}
-	}
+	return countPlayersByTeam();
 	
-	return $result;
 }
 
 //Causes

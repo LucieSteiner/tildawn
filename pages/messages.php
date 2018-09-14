@@ -65,7 +65,7 @@ $messages = getMessages();
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-						    <button type="button" class="btn btn-success">New Message</button>
+						    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#createMessage">New Message</button>
 						</div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -84,8 +84,14 @@ $messages = getMessages();
 										    echo '<tr>';
                                             echo '<td>'.$message['title'].'</td>';
                                				echo '<td>'.$message['text'].'</td>';
-											echo '<td>'.$message['status'].'</td>';
-                                            echo '<td style="text-align: center;"><button type="button" class="btn btn-warning btn-circle"><i class="fa fa-power-off"></i></button>   <button type="button" class="btn btn-danger btn-circle"><i class="fa fa-trash-o"></i></button></td>';							
+											echo '<td>';
+											if($message['status']){
+												echo 'Active';
+											}else{
+												echo 'Inactive';
+											}
+											echo '</td>';
+                                            echo '<td style="text-align: center;"><button type="button" class="btn btn-warning btn-circle" data-toggle="modal" data-target="#toggleStatus" data-id="'. $message['id']. '" data-title="'. $message['title'] .'" data-status="'.$message['status'].'"><i class="fa fa-power-off"></i></button>   <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#deleteMessage" data-id="'. $message['id'] .'" data-title="'. $message['title']. '"><i class="fa fa-trash-o"></i></button></td>';							
 										    echo '</tr>';
 										}
 								    ?>
@@ -93,7 +99,103 @@ $messages = getMessages();
                                 </tbody>
                             </table>
                             <!-- /.table-responsive -->
-                           
+                        <!-- Modal Create -->
+                            <div class="modal fade" id="createMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">New Message</h4>
+                                        </div>
+										<form name="create" role="form" method="post" action="../controller/messages.php">
+
+											<div class="modal-body">
+													<div class="form-group">
+														<label for="name">Title</label>
+														<input type="text" name="title" class="form-control">
+													</div>
+													<div class="form-group">
+														<label for="text">Text</label>
+														<textarea class="form-control" name="text" rows="3"></textarea>
+													</div>
+													
+													<input type="hidden" name="action" value="create">
+													<input type="hidden" name="src" value="message">
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+												<button type="submit" class="btn btn-primary">Create</button>
+											</div>
+										</form>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+							</div>  
+							<!-- Modal Delete -->
+                            <div class="modal fade" id="deleteMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">Delete Message</h4>
+                                        </div>
+										<form name="delete" role="form" method="post" action="../controller/messages.php">
+
+											<div class="modal-body">
+													<div class="form-group">
+														<p> Delete this message? </p>
+														<input disabled class="form-control title">
+														
+													    <input type="hidden" name="id" class="id">
+														<input type="hidden" name="action" value="delete">
+														<input type="hidden" name="src" value="message">
+													</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+												<button type="submit" class="btn btn-primary">Yes</button>
+											</div>
+										</form>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+							</div>   
+							<!-- Modal Toggle -->
+                            <div class="modal fade" id="toggleStatus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">Message Status</h4>
+                                        </div>
+										<form name="toggle" role="form" method="post" action="../controller/messages.php">
+
+											<div class="modal-body">
+													<p> Toggle message status? </p>
+													<div class="form-group">
+														
+														<label for="title">Title</label>
+														<input disabled class="form-control title">
+													</div>
+													
+													    <input type="hidden" name="id" class="id">
+														<input type="hidden" name="action" value="toggle">
+														<input type="hidden" name="src" value="message">
+													
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+												<button type="submit" class="btn btn-primary">Yes</button>
+											</div>
+										</form>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+							
+							</div>   
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -139,6 +241,23 @@ $messages = getMessages();
 			]
         });
     });
+	$('#deleteMessage').on('show.bs.modal', function (event){
+        var button = $(event.relatedTarget)
+		var id = button.data('id')
+        var title = button.data('title')
+		var modal = $(this)
+		modal.find('.modal-body .id').val(id)
+		modal.find('.modal-body .title').val(title)
+	});
+	$('#toggleStatus').on('show.bs.modal', function (event){
+        var button = $(event.relatedTarget)
+		var id = button.data('id')
+        var title = button.data('title')
+		
+		var modal = $(this)
+		modal.find('.modal-body .id').val(id)
+		modal.find('.modal-body .title').val(title)
+	});
     </script>
 
 </body>

@@ -6,6 +6,7 @@ $players = getPlayers();
 
 $causesBonus = getCauses("Bonus");
 $causesMalus = getCauses("Malus");
+
 //getCauses -> cause, category, value
 
 //add link to player information
@@ -70,7 +71,6 @@ $causesMalus = getCauses("Malus");
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-						    <button type="button" class="btn btn-info">Export Scoreboard</button>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -88,15 +88,15 @@ $causesMalus = getCauses("Malus");
                                 </thead>
                                 <tbody>
 								    <?php 
-									    $parity = 1;
+									    
 									    foreach ($players as $player){
-										    if($parity == 1){
-												echo '<tr class="odd">';
+										    echo '<tr>';
+                                            if($player['amulet'] != NULL){
+												echo '<td>'.$player['amulet'].'</td>';
+											}else{
+												echo '<td style="text-align:center;"><button type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#amulet" data-id="'.$player['id'].'"><i class="fa fa-arrow-right"></i></button>';
 											}
-                                            else{
-												echo '<tr class="even">';
-											}
-                                            echo '<td>'.$player['amulet'].'</td>';
+											
                                				echo '<td>'.$player['firstname'].'</td>';
                                             echo '<td>'.$player['lastname'].'</td>';
                                             echo '<td>'.$player['team'].'</td>';
@@ -123,9 +123,9 @@ $causesMalus = getCauses("Malus");
 
 											<div class="modal-body">
 													<div class="form-group">
-														<select name="name" class="form-control">
+														<select name="causeId" class="form-control">
 															<?php foreach($causesBonus as $cause){?>
-															<option><?php echo $cause["name"]; ?></option>
+															<option value="<?php echo $cause['id']; ?>"><?php echo $cause["name"]; ?></option>
 															<?php };
 															?>
 														</select>
@@ -156,15 +156,44 @@ $causesMalus = getCauses("Malus");
 										<div class="modal-body">
                                         
 											    <div class="form-group">
-													<select name="name" class="form-control" onchange="fillValue(this.value)">
+													<select name="causeId" class="form-control" onchange="fillValue(this.value)">
 														<?php foreach($causesMalus as $cause){?>
-														<option><?php echo $cause["name"]; ?></option>
+														<option value="<?php echo $cause['id']; ?>"><?php echo $cause["name"]; ?></option>
 														<?php };
 														?>
 													</select>
 												</div>
 												<input type="hidden" class="id" name="id" value="">
 												<input type="hidden" name="src" value="player">
+										
+										</div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+										</div>
+										</form>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+							<!-- Modal Amulet-->
+                            <div class="modal fade" id="amulet" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">Set Amulet</h4>
+                                        </div>
+										<form name="amulet" role="form" method="post" action="../controller/setAmulet.php">
+										<div class="modal-body">
+                                        
+											    <div class="form-group">
+													<label for="amulet">Amulet</label>
+													<input type="text" class="form-control" name="amulet">
+												</div>
+												<input type="hidden" class="id" name="id" value="">
+												<input type="hidden" name="src" value="../pages/players.php">
 										
 										</div>
                                         <div class="modal-footer">
@@ -229,6 +258,18 @@ $causesMalus = getCauses("Malus");
         var player = button.data('player')
 		var modal = $(this)
         modal.find('.modal-body .id').val(player)
+	})
+	$('#addMalus').on('show.bs.modal', function (event){
+        var button = $(event.relatedTarget)
+        var player = button.data('player')
+		var modal = $(this)
+        modal.find('.modal-body .id').val(player)
+	})
+	$('#amulet').on('show.bs.modal', function (event){
+        var button = $(event.relatedTarget)
+        var id = button.data('id')
+		var modal = $(this)
+        modal.find('.modal-body .id').val(id)
 	})
 	</script>
 

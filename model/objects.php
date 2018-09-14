@@ -48,6 +48,12 @@ function getObjectById($objectId){
     return fetch_result($res);
 }
 
+function countFoundObjects(){
+	$link = connect();
+    $res = mysqli_query($link, 'select count(*) as nb from objects where found=1;');
+
+    return fetch_result($res);
+}
 //returns True if object edition succeeded, False otherwise
 //$newOwner must be teamId
 function editObject($objectId, $newName, $newValue, $newOwner){

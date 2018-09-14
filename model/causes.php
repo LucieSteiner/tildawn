@@ -30,7 +30,12 @@ function getAllCauses(){
 
     return fetch_result($res);
 }
+function countCauses(){
+	$link = connect();
+    $res = mysqli_query($link, 'select count(*) as nb from causes;');
 
+    return fetch_result($res);
+}
 //returns true if edition succeeded, false otherwise
 //category cannot be changed
 function editCause($causeId, $newName, $newValue){

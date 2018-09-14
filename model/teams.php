@@ -49,9 +49,12 @@ function editTeamScore($teamId, $points, $cause){
 
 //returns true if edition succeeded, false otherwise
 //points can be positive or negative
-function addBonusMalusToTeam($teamName, $cause){
+function addBonusMalusToTeam($teamId, $cause){
     //log or other action before editing player's score
-    return editTeamScore($teamName, $cause['value'], $cause['name']);
+    $link = connect();
+	
+	mysqli_query($link, 'insert into specialTeamLog(causeId, teamId, scoreImpact) VALUES ('.$cause['id'].', '.$teamId.', '.$cause['value'].');') or die(mysqli_error($link));
+    return mysqli_affected_rows($link);
 }
 
 //see if necessary or if getTeamByName/getAllTeams gives all stats

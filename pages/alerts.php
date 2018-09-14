@@ -65,7 +65,7 @@ $alerts = getAlerts();
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-						    <button type="button" class="btn btn-success">New Alert</button>
+						    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#createAlert">New Alert</button>
 						</div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -84,8 +84,14 @@ $alerts = getAlerts();
 										    echo '<tr>';
                                             echo '<td>'.$alert['title'].'</td>';
                                				echo '<td>'.$alert['text'].'</td>';
-											echo '<td>'.$alert['status'].'</td>';
-                                            echo '<td style="text-align: center;"><button type="button" class="btn btn-warning btn-circle"><i class="fa fa-power-off"></i></button>    <button type="button" class="btn btn-danger btn-circle"><i class="fa fa-trash-o"></i></button></td>';							
+											echo '<td>';
+											if($alert['status']){
+												echo 'Active';
+											}else{
+												echo 'Inactive';
+											}
+											echo '</td>';
+                                            echo '<td style="text-align: center;"><button type="button" class="btn btn-warning btn-circle" data-toggle="modal" data-target="#toggleStatus" data-id="'. $alert['id']. '" data-title="'. $alert['title'] .'" data-status="'.$alert['status'].'"><i class="fa fa-power-off"></i></button>    <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#deleteAlert" data-id="'. $alert['id'] .'" data-title="'. $alert['title']. '"><i class="fa fa-trash-o"></i></button></td>';							
 										    echo '</tr>';
 										}
 								    ?>
@@ -93,7 +99,103 @@ $alerts = getAlerts();
                                 </tbody>
                             </table>
                             <!-- /.table-responsive -->
-                           
+                        <!-- Modal Create -->
+                            <div class="modal fade" id="createAlert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">New Alert</h4>
+                                        </div>
+										<form name="create" role="form" method="post" action="../controller/messages.php">
+
+											<div class="modal-body">
+													<div class="form-group">
+														<label for="name">Title</label>
+														<input type="text" name="title" class="form-control">
+													</div>
+													<div class="form-group">
+														<label for="text">Text</label>
+														<textarea class="form-control" name="text" rows="3"></textarea>
+													</div>
+													
+													<input type="hidden" name="action" value="create">
+													<input type="hidden" name="src" value="alert">
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+												<button type="submit" class="btn btn-primary">Create</button>
+											</div>
+										</form>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+							</div>  
+							<!-- Modal Delete -->
+                            <div class="modal fade" id="deleteAlert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">Delete Alert</h4>
+                                        </div>
+										<form name="delete" role="form" method="post" action="../controller/messages.php">
+
+											<div class="modal-body">
+													<div class="form-group">
+														<p> Delete this alert? </p>
+														<input disabled class="form-control title">
+														
+													    <input type="hidden" name="id" class="id">
+														<input type="hidden" name="action" value="delete">
+														<input type="hidden" name="src" value="alert">
+													</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+												<button type="submit" class="btn btn-primary">Yes</button>
+											</div>
+										</form>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+							</div>   
+							<!-- Modal Toggle -->
+                            <div class="modal fade" id="toggleStatus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">Alert Status</h4>
+                                        </div>
+										<form name="toggle" role="form" method="post" action="../controller/messages.php">
+
+											<div class="modal-body">
+													<p> Toggle alert status? </p>
+													<div class="form-group">
+														
+														<label for="title">Title</label>
+														<input disabled class="form-control title">
+													</div>
+													
+													    <input type="hidden" name="id" class="id">
+														<input type="hidden" name="action" value="toggle">
+														<input type="hidden" name="src" value="alert">
+													
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+												<button type="submit" class="btn btn-primary">Yes</button>
+											</div>
+										</form>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+							
+							</div>    
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -141,6 +243,23 @@ $alerts = getAlerts();
 			searching: false,
 			info:false
         });
+	});
+	$('#deleteAlert').on('show.bs.modal', function (event){
+        var button = $(event.relatedTarget)
+		var id = button.data('id')
+        var title = button.data('title')
+		var modal = $(this)
+		modal.find('.modal-body .id').val(id)
+		modal.find('.modal-body .title').val(title)
+	});
+	$('#toggleStatus').on('show.bs.modal', function (event){
+        var button = $(event.relatedTarget)
+		var id = button.data('id')
+        var title = button.data('title')
+		
+		var modal = $(this)
+		modal.find('.modal-body .id').val(id)
+		modal.find('.modal-body .title').val(title)
 	});
     </script>
 </body>

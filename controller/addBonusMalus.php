@@ -3,8 +3,8 @@ require("../model/players.php");
 require("../model/teams.php");
 require("../model/causes.php");
 
-if(isset($_POST["name"]) && isset($_POST['id'])){
-    $cause = getCauseByName($_POST["name"]);
+if(isset($_POST["causeId"]) && isset($_POST['id'])){
+    $cause = getCauseById($_POST["causeId"])[0];
 	if(isset($_POST["src"])){
 		if($_POST['src'] == "player"){
 			addBonusMalusToPlayer($_POST['id'], $cause);
@@ -16,7 +16,7 @@ if(isset($_POST["name"]) && isset($_POST['id'])){
 		}
 	}
 }else{
-	header('Location: ../pages/index.php');
+	//header('Location: ../pages/index.php');
 }
 
 ?>

@@ -1,15 +1,17 @@
 <?php
 require('../controller/grotte.php');
+$teamScores = topTeams();
+$topAllTeams = topPlayersAllTeams(10);
 
-$topAllTeams = topPlayersAllTeams(5);
+$topAsile = topPlayersByTeam(1, 10);
+$topUsine = topPlayersByTeam(2, 10);
+$topAbattoirs = topPlayersByTeam(3, 10);
+$topCaserne = topPlayersByTeam(4, 10);
+$topZombie = topPlayersByTeam(5, 10);
 
-$topAsile = topPlayersByTeam(1, 5);
-$topUsine = topPlayersByTeam(2, 5);
-$topAbattoirs = topPlayersByTeam(3, 5);
-$topCaserne = topPlayersByTeam(4, 5);
-$topZombie = topPlayersByTeam(5, 5);
+$messages = getActiveMessages();
+$alerts = getActiveAlerts();
 
-//TODO: carrousel (optionnel)
 
 ?>
 <html>
@@ -20,9 +22,18 @@ $topZombie = topPlayersByTeam(5, 5);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    
     <title>'tildawn</title>
-
+    <!-- Carousel -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+    .carousel-inner > .item > img,
+    .carousel-inner > .item > a > img {
+        width: 100%;
+        margin: auto;
+    }
+  </style>
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -46,29 +57,61 @@ $topZombie = topPlayersByTeam(5, 5);
     <![endif]-->
 
 </head>
-<body>
+<body style="background-color:#444;">
 <?php require("nav.php");?>
 <div id="wrapper">
-<div class="row">
-    <div class="col-lg-12">
-               
-		<div class="alert alert-danger">
-			<a href="#" class="alert-link">Titre </a>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-		</div>
-		<div class="alert alert-warning">
-			<a href="#" class="alert-link">Titre </a>Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-		</div>
-		<div class="alert alert-warning">
-			<a href="#" class="alert-link">Titre </a>Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-		</div>
-	</div>
-                <!-- /.col-lg-12 -->
-</div>
-<div class="row">
-	<div class="col-lg-4">
-		<div class="panel panel-default">
+<div class="container">
+  <br>
+  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+	  <?php if(count($alerts) == 0){?>
+	  <div class="item active">
+		<h1 style="color: #f8f8f8"> Bienvenue à la salle de contrôle ! </h1>
+		<br><br>
+		<?php 
+		    foreach($messages as $message){
+				?>
+				<div class="alert alert-warning">
+				<a href="#" class="alert-link"><?php echo $message['title'];?></a><br><?php echo $message['text'];?>
+				</div>
+				<?php
+			}
+		
+		?>
+		
+	  </div>
+	  <div class="item">
+        <div class="panel panel-default">
 			<div class="panel-heading">
-				Top 5 Players - All Teams
+				Team Scoreboard
+			</div>
+			<div class="panel-body">
+				                    
+                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+				
+				<tbody>
+					<?php 
+						foreach ($teamScores as $team){
+							echo '<tr >';
+					
+							echo '<td>'.$team['id'].'</td>';
+							echo '<td>'.$team['score'].'</td>';
+							echo '</tr>';
+						}
+					?>
+					
+				</tbody>
+			</table>
+            </div>   
+		</div>
+      </div>
+      <div class="item">
+        <div class="panel panel-default">
+			<div class="panel-heading">
+				Top 10 Players - All Teams
 			</div>
 			<div class="panel-body">
 				                    
@@ -90,14 +133,14 @@ $topZombie = topPlayersByTeam(5, 5);
 					
 				</tbody>
 			</table>
-			<!-- /.table-responsive -->
             </div>   
 		</div>
-	</div>
-	<div class="col-lg-4">
-		<div class="panel panel-green">
+      </div>
+
+      <div class="item">
+        <div class="panel panel-green">
 			<div class="panel-heading">
-				Top 5 Players - Asile
+				Top 10 Players - Asile
 			</div>
 			<div class="panel-body">
 			<table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
@@ -119,11 +162,12 @@ $topZombie = topPlayersByTeam(5, 5);
 			</table>
 			</div>
 		</div>
-	</div>
-	<div class="col-lg-4">
-		<div class="panel panel-primary">
+      </div>
+    
+      <div class="item">
+        <div class="panel panel-primary">
 			<div class="panel-heading">
-				Top 5 Players - Usine
+				Top 10 Players - Usine
 			</div>
 			<div class="panel-body">
 			    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
@@ -145,13 +189,12 @@ $topZombie = topPlayersByTeam(5, 5);
 			</table>
 			</div>
 		</div>
-	</div>
-</div>
-<div class="row">
-	<div class="col-lg-4">
-		<div class="panel panel-red">
+      </div>
+
+      <div class="item">
+        <div class="panel panel-red">
 			<div class="panel-heading">
-				Top 5 Players - Abattoirs
+				Top 10 Players - Abattoirs
 			</div>
 			<div class="panel-body">
 			    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
@@ -173,11 +216,11 @@ $topZombie = topPlayersByTeam(5, 5);
 			</table>
 			</div>
 		</div>
-	</div>
-	<div class="col-lg-4">
-		<div class="panel panel-yellow">
+      </div>
+	  <div class="item">
+	    <div class="panel panel-yellow">
 			<div class="panel-heading">
-				Top 5 Players - Caserne
+				Top 10 Players - Caserne
 			</div>
 			<div class="panel-body">
 			    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
@@ -199,15 +242,15 @@ $topZombie = topPlayersByTeam(5, 5);
 		    </div>
 	    </div>
 	</div>
-	<div class="col-lg-4">
-		<div class="panel panel-grey">
-			<div class="panel-heading">
-				Top 5 Players - Zombie
-			</div>
-			<div class="panel-body">
-			    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+		<div class="item">
+		    <div class="panel panel-grey">
+				<div class="panel-heading">
+				Top 10 Players - Zombie
+				</div>
+				<div class="panel-body">
+					<table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
 				
-				<tbody>
+					<tbody>
 					<?php 
 						foreach ($topZombie as $player){
 							echo '<tr >';
@@ -220,14 +263,41 @@ $topZombie = topPlayersByTeam(5, 5);
 						}
 					?>
 					
-				</tbody>
-			</table>
+					</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
-	</div>
+	  <?php
+	  }else{
+		  echo '<div class="item active">';
+		  foreach($alerts as $alert){
+				?>
+				<div class="alert alert-danger">
+				<h2 href="#" class="alert-link"><?php echo $alert['title'];?></h2><h3><?php echo $alert['text'];?></h3>
+				</div>
+				<?php
+			};?>
+		</div>
+		  <?php
+	  };?>
+
+
+  </div>
+</div>
 </div>
 </div>
 </body>
+
+ 
+
+<script>
+$(document).ready(function(){
+    // Activate Carousel
+    $("#myCarousel").carousel({interval: 10000});
+});
+</script>
+
 <!-- jQuery -->
     <script src="../vendor/jquery/jquery.min.js"></script>
 
@@ -244,3 +314,4 @@ $topZombie = topPlayersByTeam(5, 5);
 
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
+</html>

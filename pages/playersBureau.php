@@ -78,7 +78,13 @@ $players = getPlayers();
 								    <?php 
 									    foreach ($players as $player){
 										    echo '<tr>';
-                                            echo '<td><a href="infoPlayer.php?id='.$player['id'].'">'.$player['amulet'].'</a></td>';
+											if($player['amulet'] != NULL){
+												echo '<td><a href="infoPlayer.php?id='.$player['id'].'">'.$player['amulet'].'</a></td>';
+											}else{
+												echo '<td style="text-align:center;"><button type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#amulet" data-id="'.$player['id'].'"><i class="fa fa-arrow-right"></i></button>';
+											}
+											
+                                 
                                				echo '<td>'.$player['firstname'].'</td>';
                                             echo '<td>'.$player['lastname'].'</td>';
                                             echo '<td>'.$player['team'].'</td>';
@@ -89,7 +95,35 @@ $players = getPlayers();
                                 </tbody>
                             </table>
                             <!-- /.table-responsive -->
-                           
+							<!-- Modal Amulet -->
+							<div class="modal fade" id="amulet" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">Set Amulet</h4>
+                                        </div>
+										<form name="amulet" role="form" method="post" action="../controller/setAmulet.php">
+										<div class="modal-body">
+                                        
+											    <div class="form-group">
+													<label for="amulet">Amulet</label>
+													<input type="text" class="form-control" name="amulet">
+												</div>
+												<input type="hidden" class="id" name="id" value="">
+												<input type="hidden" name="src" value="../pages/playersBureau.php">
+										
+										</div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+										</div>
+										</form>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -131,6 +165,12 @@ $players = getPlayers();
 			order: [[2, 'asc']]
         });
     });
+	$('#amulet').on('show.bs.modal', function (event){
+        var button = $(event.relatedTarget)
+        var id = button.data('id')
+		var modal = $(this)
+        modal.find('.modal-body .id').val(id)
+	})
     </script>
 
 </body>

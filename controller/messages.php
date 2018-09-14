@@ -1,6 +1,7 @@
 <?php
+require('../model/messages.php');
 
-if(isset[$_POST['action'] && isset($_POST['src'])){
+if(isset($_POST['action']) && isset($_POST['src'])){
     if($_POST['action'] == 'create'){
 	    if($_POST['src'] == 'message'){
 		    createNewMessage($_POST['title'], $_POST['text']);
