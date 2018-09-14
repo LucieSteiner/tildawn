@@ -1,6 +1,6 @@
 <?php
 
-include_once(db.php);
+include_once('../model/db.php');
 
 //return teams as an array of teams (name, score)
 function getAllTeams(){
@@ -22,7 +22,7 @@ function getAllTeams(){
 //return all information (stats) about the team as an array (....)
 function getTeamById($teamId){
     $link = connect();
-    $res = mysqli_query($link, 'select `id`, `name`, `score` from teams where `id`='. $teamId .';');
+    $res = mysqli_query($link, 'select id`, `name`, `score` from teams where `id`='. $teamId .';');
 
     return fetch_result($res);
 }

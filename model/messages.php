@@ -1,6 +1,6 @@
 <?php
 
-include_once(db.php);
+include_once('../model/db.php');
 
 /* Messages (information) */
 
@@ -9,14 +9,14 @@ include_once(db.php);
 function getAllMessages(){
     /*for testing purposes only, replace with request to db
     return array(
-        array('id' => 1, 'title' => 'Indice', 'text' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.', 'status' => 'Active'),
-        array('id' => 2, 'title' => 'Annonce', 'text' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.', 'status' =>'Inactive'),
+        array('messageId' => 1, 'title' => 'Indice', 'text' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.', 'status' => 'Active'),
+        array('messageId' => 2, 'title' => 'Annonce', 'text' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.', 'status' =>'Inactive'),
         array('id' => 3, 'title' => 'Météo', 'text' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.', 'status' =>'Active'),
         array('id' => 4, 'title' => 'Nouvel indice', 'text' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.', 'status' =>'Active'),
         array('id' => 5, 'title' => 'Fin du jeu', 'text' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan aliquet tellus, semper euismod urna finibus placerat. Vestibulum hendrerit tellus.', 'status' =>'Inactive')
     );*/
     $link = connect();
-    $res = mysqli_query($link, 'select `id`, `title`, `text`, `status` from informations;');
+    $res = mysqli_query($link, 'select `id`, `title`, `text`, `status` from messages;');
 
     return fetch_result($res);
 }
@@ -25,7 +25,7 @@ function getAllMessages(){
 //returns true if change succeeded, false otherwise
 function toggleMessageStatus($messageId){
     $link = connect();
-    mysqli_query($link, 'update informations set `status`=!`status` where `id`='. $messageId .';');
+    mysqli_query($link, 'update messages set `status`=!`status` where `id`='. $messageId .';');
 
     return mysqli_affected_rows($link);
 }
@@ -33,7 +33,7 @@ function toggleMessageStatus($messageId){
 //returns True if deletion succeeded, False otherwise
 function deleteMessage($messageId){
     $link = connect();
-    mysqli_query($link, 'delete * from informations where `id`='. $messageId .';');
+    mysqli_query($link, 'delete * from messages where `id`='. $messageId .';');
 
     return mysqli_affected_rows($link);
 }
@@ -42,7 +42,7 @@ function deleteMessage($messageId){
 //message status is always inactive at creation
 function createNewMessage($title, $text){
     $link = connect();
-    mysqli_query($link, 'insert into informations(`title`, `content`, `creationTime`, `published`) values("'. $title .'", "'. $text .'", '. time() .', 0);');
+    mysqli_query($link, 'insert into messages(`title`, `text`, `creationTime`, `status`) values("'. $title .'", "'. $text .'", '. time() .', 0);');
 
     return mysqli_affected_rows($link);
 }
@@ -67,8 +67,10 @@ function getAllAlerts(){
 //change status form active to inactive or from inactive to active
 //returns true if change succeeded, false otherwise
 function toggleAlertStatus($alertId){
-    // not used, Alerts are always active
-    return false;
+    $link = connect();
+    mysqli_query($link, 'update alerts set `status`=!`status` where id`='. $alertId .';');
+
+    return mysqli_affected_rows($link);
 }
 
 //returns True if deletion succeeded, False otherwise
@@ -83,7 +85,7 @@ function deleteAlert($alertId){
 //alert status is always inactive at creation
 function createNewAlert($title, $text){
     $link = connect();
-    mysqli_query($link, 'insert into alerts(`title`, `content`, `creationTime`) values("'. $title .'", "'. $text .'", '. time() .');');
+    mysqli_query($link, 'insert into alerts(`title`, `test`, `creationTime`) values("'. $title .'", "'. $text .'", '. time() .');');
 
     return mysqli_affected_rows($link);
 }

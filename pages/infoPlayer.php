@@ -3,7 +3,7 @@
 require("../controller/bureau.php");
 $player = getPlayer($_GET['id']);
 
-
+echo $player['id'];
 ?>
 <html lang="en">
 

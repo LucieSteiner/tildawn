@@ -1,6 +1,6 @@
 <?php
 
-include_once(db.php);
+include_once('../model/db.php');
 
 //returns players as an array of players (id, amulet, firstname, lastname, team, score, gender, group, nbDeaths, nbKills, nbOwnLivesTaken, nbEnemyLivesGiven, nbTimesArrested, NbCheatersCaught)
 function getAllPlayers(){
@@ -37,7 +37,7 @@ function getAllPlayers(){
     );*/
 
     $link = connect();
-    $res = mysqli_query($link, 'select * from players;');
+    $res = mysqli_query($link, 'select players.id as id, amulet, firstname, lastname, teams.name as team, players.score as score, gender, `group`, nbDeaths, nbKills, nbOwnLivesTaken, nbEnemyLivesGiven, nbTimesArrested, NbCheatersCaught from players INNER JOIN teams ON players.teamId = teams.id;');
 
     return fetch_result($res);
 }
@@ -53,7 +53,8 @@ function getPlayerById($playerId){
     }*/
 
     $link = connect();
-    $res = mysqli_query($link, 'select * from players where `id`='. $playerId .';');
+    $res = mysqli_query($link, 'select players.id as id, amulet, firstname, lastname, teams.name as team, players.score as score, gender, `group`, nbDeaths, nbKills, nbOwnLivesTaken, nbEnemyLivesGiven, nbTimesArrested, NbCheatersCaught from players INNER JOIN teams ON players.teamId = teams.id where players.id = '. $playerId .';');
+
 
     return fetch_result($res);
 }
@@ -69,7 +70,7 @@ function getPlayerIdByAmulet($amulet){
     }*/
 
     $link = connect();
-    $res = mysqli_query($link, 'select * from players where `amulet`='. $amulet .';');
+    $res = mysqli_query($link, 'select id from players where `amulet`="'. $amulet .'";');
 
     return fetch_result($res);
 }
@@ -84,18 +85,23 @@ function editPlayerScore($playerId, $points, $cause){
     return mysqli_affected_rows($link);
 }
 //returns true if edition succeeded, false otherwise
-function setPlayerAmulet(){
+function setPlayerAmulet($playerId, $amulet){
     $link = connect();
-    // player name? id? qui éditer?
-    //mysqli_query($link, 'update teams set `score`=`score` + '. $points .' where `id`='. $pla.';');
+	
+    mysqli_query($link, 'update teams set `amulet`='. $amulet .' where `id`='. $playerId.';');
 
     return mysqli_affected_rows($link);
 }
 //returns true if edition succeeded, false otherwise
 //points can be positive or negative
+//$cause = $causeId
 function addBonusMalusToPlayer($playerId, $cause){
     //log or other action before editing player's score
-    return editPlayerScore($playerId, $cause['value'], $cause['name']);
+	//ajouter une entrée à la table specialplayerlog
+	$link = connect();
+	
+	mysqli_query($link, 'insert into specialPlayerLog(causeId, playerId, scoreImpact) ('.$cause['id'].', '.$playerId.', '.$cause['value'].');');
+    return mysqli_affected_rows($link);
 }
 /*
 Compteurs:

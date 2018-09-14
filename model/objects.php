@@ -1,6 +1,6 @@
 <?php
 
-include_once(db.php);
+include_once('../model/db.php');
 
 //returns an array of arrays containing objects properties (name, value, foundby, main)
 //if an object has not been found yet, the value for the foundby field must be "-"
@@ -24,7 +24,7 @@ function getAllObjects(){
     );*/
 
     $link = connect();
-    $res = mysqli_query($link, 'select `id`, `name`, `foundby`, `main` from objects;');
+    $res = mysqli_query($link, 'select objects.id as id, objects.name as name, value, teams.name as foundby, `main` from objects left join teams on objects.teamId = teams.id;');
 
     return fetch_result($res);
 
@@ -42,15 +42,20 @@ function getObjectById($objectId){
     return null;*/
 
     $link = connect();
-    $res = mysqli_query($link, 'select `id`, `name`, `foundby`, `main` from objects where `id`='. $objectId .';');
+    $res = mysqli_query($link, 'select objects.id as id, objects.name as name, value, teams.name as foundby, `main` from objects left join teams on objects.teamId = teams.id where `id`='. $objectId .';');
 
     return fetch_result($res);
 }
 
 //returns True if object edition succeeded, False otherwise
+//$newOwner must be teamId
 function editObject($objectId, $newName, $newValue, $newOwner){
     $link = connect();
-    mysqli_query($link, 'update objects set `found`=1 where `id`='. $objectId .';');
+	$found = 0;
+	if($newOwner != NULL){
+		$found = 1;
+	}
+    mysqli_query($link, 'update objects set `name`='. $newName .', `value`='. $newValue .', `found`='. $found .', teamId ='. $newOwner.' where `id`='. $objectId .';');
 
     return mysqli_affected_rows($link);
 }

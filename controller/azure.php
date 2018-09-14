@@ -9,26 +9,34 @@ require("../controller/common.php");
 //Dashboard
 function getBestTeamScore(){
 	$teams = getAllTeams();
-	$max = $teams[0]['score'];
-	foreach($teams as $team){
-		if($team['score'] > $max){
-			$max = $team['score'];
+	if(count($teams) > 0){
+		$max = $teams[0]['score'];
+		foreach($teams as $team){
+			if($team['score'] > $max){
+				$max = $team['score'];
+			}
+			
 		}
-		
+		return $max;
 	}
-	return $max;
+	return 0;
+	
 }
 
 //Dashboard
 function getBestPlayerScore(){
 	$players = getAllPlayers();
-	$max = $players[0]['score'];
-	foreach($players as $player){
-		if($player['score'] > $max){
-			$max = $player['score'];
+	if(count($players) > 0){
+		$max = $players[0]['score'];
+		foreach($players as $player){
+			if($player['score'] > $max){
+				$max = $player['score'];
+			}
 		}
+		return $max;
 	}
-	return $max;
+	return 0;
+	
 }
 
 //Dashboard
@@ -61,7 +69,7 @@ function getNbFoundObjects(){
 	$counter = 0;
 	$objects = getAllObjects();
 	foreach ($objects as $object){
-		if ($object["foundby"] != "-"){
+		if ($object["foundby"] != NULL){
 			$counter += 1;
 		}
 	}

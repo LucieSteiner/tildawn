@@ -89,7 +89,7 @@ $objects = getObjects();
 											echo '<td>'.$object['foundby'].'</td>';
 											
                                             echo '<td style="text-align: center;">';
-											if($object['foundby'] == "-"){
+											if($object['foundby'] == NULL){
 												echo '<button type="button" class="btn btn-success btn-circle"><i class="fa fa-arrow-right"></i></button>';
 											}
 											echo '</td>';							

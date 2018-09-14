@@ -11,7 +11,7 @@
 
 /* Constants */
 define("HOST", "localhost");
-define("USER", "");
+define("USER", "root");
 define("PWD", "");
 define("DB", "tildawn");
 
@@ -21,9 +21,14 @@ function connect() {
 }
 
 function fetch_result($res) {
-    while($row = mysqli_fetch_assoc($res)) {
-        $result[] = $row;
-    }
+	$result = array();
+	if($res != False){
+	    while($row = mysqli_fetch_assoc($res)) {
+            $result[] = $row;
+        }
+	}else{
+		//echo "No result";
+	}
     return $result;
 }
 
