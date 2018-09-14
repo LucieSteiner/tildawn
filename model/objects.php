@@ -30,6 +30,7 @@ function getAllObjects(){
 
 }
 
+
 //returns an array containing the object's properties (id, name, value, foundby)
 function getObjectById($objectId){
     /*for testing purposes only, must be replaced by db request
@@ -42,7 +43,7 @@ function getObjectById($objectId){
     return null;*/
 
     $link = connect();
-    $res = mysqli_query($link, 'select objects.id as id, objects.name as name, value, teams.name as foundby, `main` from objects left join teams on objects.teamId = teams.id where `id`='. $objectId .';');
+    $res = mysqli_query($link, 'select objects.id as id, objects.name as name, value, teams.name as foundby, `main` from objects left join teams on objects.teamId = teams.id where objects.id ='. $objectId .';');
 
     return fetch_result($res);
 }
@@ -54,8 +55,12 @@ function editObject($objectId, $newName, $newValue, $newOwner){
 	$found = 0;
 	if($newOwner != NULL){
 		$found = 1;
+		mysqli_query($link, 'update objects set `name`="'. $newName .'", `value`='. $newValue .', `found`='. $found .', `teamId`='.$newOwner.' where `id`='. $objectId .';') or die(mysqli_error($link));
 	}
-    mysqli_query($link, 'update objects set `name`='. $newName .', `value`='. $newValue .', `found`='. $found .', teamId ='. $newOwner.' where `id`='. $objectId .';');
+    else{
+		mysqli_query($link, 'update objects set `name`="'. $newName .'", `value`='. $newValue .', `found`='. $found .', `teamId`=NULL where `id`='. $objectId .';') or die(mysqli_error($link));
+	}
+    
 
     return mysqli_affected_rows($link);
 }

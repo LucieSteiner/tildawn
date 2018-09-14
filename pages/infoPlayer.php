@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <?php
 require("../controller/bureau.php");
-$player = getPlayer($_GET['id']);
-
-echo $player['id'];
+$playerInfo = getPlayer($_GET['id']);
+$player = $playerInfo[0];
 ?>
 <html lang="en">
 
@@ -61,16 +60,16 @@ echo $player['id'];
 				
 	        <div class="row">
 					<div class="col-lg-3">
-						<button type="button" class="btn btn-danger btn-block"> Get Arrested </button>
+						<button type="button" class="btn btn-danger btn-block" data-toggle="modal" data-target="#arrest"> Get Arrested </button>
 					</div>
 					<div class="col-lg-3">
-						<button type="button" class="btn btn-warning btn-block"> Change Team </button>
+						<button type="button" class="btn btn-warning btn-block" data-toggle="modal" data-target="#team"> Change Team </button>
 					</div>
 					<div class="col-lg-3">
-						<button type="button" class="btn btn-success btn-block"> Buy Lives</button>	
+						<button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#lives"> Buy Lives</button>	
 					</div>
 					<div class="col-lg-3">
-						<button type="button" class="btn btn-primary btn-block" > Get Amulet Back</button>
+						<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#amulet"> Get Amulet Back</button>
 					</div>
 			</div>
 			<br>
@@ -130,7 +129,7 @@ echo $player['id'];
 									</tr>
 									<tr>
 									    <th> Current Weighted Score </th>
-										<td> <?php echo calculateWeightedScore($player); ?> </td>
+										<td> <?php echo calculateWeightedScore($player['score'], $player['teamScore']); ?> </td>
 									</tr>
 									<tr>
 									    <th> # of Deaths </th>
@@ -164,7 +163,7 @@ echo $player['id'];
 					</div>
 				</div>
 			</div>
-			<!-- Modal Amulet -->
+			<!-- Modal buy-lives -->
 			<div class="modal fade" id="lives" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -177,7 +176,7 @@ echo $player['id'];
 							<div class="modal-body">
 									<div class="form-group">
 										<label for="nbLives">Number of Lives</label>
-										<input type="number" name="nbLives" autofocus>
+										<input type="number" name="nbLives" autofocus class="form-control">
 									</div>
 									<input type="hidden" name="id" value="<?php echo $player['id']; ?>">
 									<input type="hidden" name="src" value="buy-lives">
@@ -192,7 +191,91 @@ echo $player['id'];
 					<!-- /.modal-content -->
 				</div>
 				<!-- /.modal-dialog -->
-			</div>		
+			</div>
+			<!-- Modal get-arrested -->
+			<div class="modal fade" id="arrest" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="myModalLabel">Get arrested</h4>
+						</div>
+						<form name="lives" role="form" method="post" action="../controller/points.php">
+
+							<div class="modal-body">
+									<div class="form-group">
+										<label for="winner">Arrested By</label>
+										<input type="text" name="id2" autofocus class="form-control">
+									</div>
+									<input type="hidden" name="id" value="<?php echo $player['id']; ?>">
+									<input type="hidden" name="src" value="get-arrested">
+								
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+								<button type="submit" class="btn btn-primary">Ok</button>
+							</div>
+						</form>
+					</div>
+					<!-- /.modal-content -->
+				</div>
+				<!-- /.modal-dialog -->
+			</div>	
+			<!-- Modal get-amulet -->
+			<div class="modal fade" id="amulet" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="myModalLabel">Get Amulet Back</h4>
+						</div>
+						<form name="lives" role="form" method="post" action="../controller/points.php">
+
+							<div class="modal-body">
+									<p> Click Ok to continue.
+									<input type="hidden" name="id" value="<?php echo $player['id']; ?>">
+									<input type="hidden" name="src" value="get-amulet">
+								
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+								<button type="submit" class="btn btn-primary">Ok</button>
+							</div>
+						</form>
+					</div>
+					<!-- /.modal-content -->
+				</div>
+				<!-- /.modal-dialog -->
+			</div>	
+			<!-- Modal change-team -->
+			<div class="modal fade" id="team" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="myModalLabel">Change Team</h4>
+						</div>
+						<form name="lives" role="form" method="post" action="../controller/points.php">
+
+							<div class="modal-body">
+									<div class="form-group">
+										<label for="winner">Transformed By</label>
+										<input type="text" name="id2" autofocus class="form-control">
+									</div>
+									<input type="hidden" name="id" value="<?php echo $player['id']; ?>">
+									<input type="hidden" name="src" value="change-team">
+								
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+								<button type="submit" class="btn btn-primary">Ok</button>
+							</div>
+						</form>
+					</div>
+					<!-- /.modal-content -->
+				</div>
+				<!-- /.modal-dialog -->
+			</div>				
 				
                     
 				    	
@@ -242,6 +325,18 @@ echo $player['id'];
 		<?php if(isset($_GET['src'])){
 			if($_GET['src'] == 'give-lives'){?>
 				 $('#lives').modal('show');
+			<?php
+			} 
+			else if($_GET['src'] == 'arrest'){?>
+				$('#arrest').modal('show');
+			<?php
+			}
+			else if($_GET['src'] == 'give-amulet'){?>
+				$('#amulet').modal('show');
+			<?php
+			}
+			else if($_GET['src'] == 'change-team'){?>
+				$('#team').modal('show');
 			<?php
 			}
 		}?>

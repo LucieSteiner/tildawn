@@ -37,10 +37,13 @@ function getAllPlayers(){
     );*/
 
     $link = connect();
-    $res = mysqli_query($link, 'select players.id as id, amulet, firstname, lastname, teams.name as team, players.score as score, gender, `group`, nbDeaths, nbKills, nbOwnLivesTaken, nbEnemyLivesGiven, nbTimesArrested, NbCheatersCaught from players INNER JOIN teams ON players.teamId = teams.id;');
-
+	//trop long, à voir
+    $res = mysqli_query($link, 'select players.id as id, amulet, firstname, lastname, teams.name as team, players.teamId as teamId, players.score as score, teams.score as teamScore, gender, `group`, nbDeaths, nbKills, nbOwnLivesTaken, nbEnemyLivesGiven, nbTimesArrested, NbCheatersCaught from players INNER JOIN teams ON players.teamId = teams.id;');
+    //$res = mysqli_query($link, 'select id, amulet, firstname, lastname, teamId as team, score, gender, `group`, nbDeaths, nbKills, nbOwnLivesTaken, nbEnemyLivesGiven, nbTimesArrested, NbCheatersCaught from players;');
+    //$res = mysqli_query($link, 'select * from players;');
     return fetch_result($res);
 }
+
 
 //returns player as an array (id, amulet, firstname, lastname, team, score, gender, group, nbDeaths, nbKills, nbOwnLivesTaken, nbEnemyLivesGiven, nbTimesArrested, NbCheatersCaught)
 function getPlayerById($playerId){
@@ -53,11 +56,12 @@ function getPlayerById($playerId){
     }*/
 
     $link = connect();
-    $res = mysqli_query($link, 'select players.id as id, amulet, firstname, lastname, teams.name as team, players.score as score, gender, `group`, nbDeaths, nbKills, nbOwnLivesTaken, nbEnemyLivesGiven, nbTimesArrested, NbCheatersCaught from players INNER JOIN teams ON players.teamId = teams.id where players.id = '. $playerId .';');
-
+    $res = mysqli_query($link, "select players.id as id, amulet, firstname, lastname, teams.name as team, players.teamId as teamId, players.score as score, teams.score as teamScore, gender, `group`, nbDeaths, nbKills, nbOwnLivesTaken, nbEnemyLivesGiven, nbTimesArrested, nbCheatersCaught from players INNER JOIN teams ON players.teamId = teams.id WHERE players.id = '". $playerId . "';");
+    
 
     return fetch_result($res);
 }
+
 
 //returns player id or null if amulet does not exist
 function getPlayerIdByAmulet($amulet){
@@ -70,11 +74,18 @@ function getPlayerIdByAmulet($amulet){
     }*/
 
     $link = connect();
-    $res = mysqli_query($link, 'select id from players where `amulet`="'. $amulet .'";');
-
+    $res = mysqli_query($link, "select id from players where `amulet`='$amulet';") or die(mysqli_error($link));
+    echo mysqli_error($link);
     return fetch_result($res);
 }
+function getPlayersByTeam($teamId){
+	$link = connect();
+    $res = mysqli_query($link, "select players.id as id, amulet, firstname, lastname, teams.name as team, players.teamId as teamId, players.score as score, teams.score as teamScore, gender, `group`, nbDeaths, nbKills, nbOwnLivesTaken, nbEnemyLivesGiven, nbTimesArrested, nbCheatersCaught from players INNER JOIN teams ON players.teamId = teams.id WHERE players.teamId = '". $teamId . "';");
+    
 
+    return fetch_result($res);
+
+}
 //returns true if edition succeeded, false otherwise
 //points can be positive or negative
 //another function should be called to increase/decrease counters
@@ -88,7 +99,7 @@ function editPlayerScore($playerId, $points, $cause){
 function setPlayerAmulet($playerId, $amulet){
     $link = connect();
 	
-    mysqli_query($link, 'update teams set `amulet`='. $amulet .' where `id`='. $playerId.';');
+    mysqli_query($link, 'update players set `amulet`='. $amulet .' where `id`='. $playerId.';');
 
     return mysqli_affected_rows($link);
 }
@@ -102,6 +113,15 @@ function addBonusMalusToPlayer($playerId, $cause){
 	
 	mysqli_query($link, 'insert into specialPlayerLog(causeId, playerId, scoreImpact) ('.$cause['id'].', '.$playerId.', '.$cause['value'].');');
     return mysqli_affected_rows($link);
+}
+
+function changePlayerTeam($loserId, $teamWinnerId){
+	$link = connect();
+	
+    mysqli_query($link, 'update players set `teamId`='. $teamWinnerId .' where `id`='. $loserId.';');
+
+    return mysqli_affected_rows($link);
+	
 }
 /*
 Compteurs:
@@ -129,53 +149,57 @@ function increaseNbEnemyLivesGiven($playerId, $nbLives){
 
     return mysqli_affected_rows($link);
 }
-function increaseNbKills($playerId, $loserId, $nbKills){
+function increaseNbKills($playerId){
     $link = connect();
-    mysqli_query($link, 'update players set `nbKills`=`nbKills`+'. $nbKills .' where `id`='. $playerId .';');
+    mysqli_query($link, 'update players set `nbKills`=`nbKills`+1 where `id`='. $playerId .';');
 
     return mysqli_affected_rows($link);
 }
-function increaseNbDeaths($winnerId){
+function increaseNbDeaths($playerId){
     $link = connect();
-    mysqli_query($link, 'update players set `nbDeaths`=`nbDeaths`+'. $nbLives .' where `id`='. $playerId .';');
+    mysqli_query($link, 'update players set `nbDeaths`=`nbDeaths`+1 where `id`='. $playerId .';');
 
     return mysqli_affected_rows($link);
 }
 function increaseNbTimesArrested($loserId){
     $link = connect();
-    mysqli_query($link, 'update players set `nbTimesArrested`=`nbTimesArrested`+'. $nbLives .' where `id`='. $playerId .';');
+    mysqli_query($link, 'update players set `nbTimesArrested`=`nbTimesArrested`+1 where `id`='. $loserId .';');
 
     return mysqli_affected_rows($link);
 }
 function increaseNbCheatersCaught($winnerId){
     $link = connect();
-    mysqli_query($link, 'update players set `nbCheatersCaught`=`nbCheatersCaught`+'. $nbLives .' where `id`='. $playerId .';');
+    mysqli_query($link, 'update players set `nbCheatersCaught`=`nbCheatersCaught`+1 where `id`='. $winnerId .';');
 
     return mysqli_affected_rows($link);
 }
 function increaseNbAmuletsTaken($playerId){
     $link = connect();
-    mysqli_query($link, 'update players set `nbAmuletsTaken`=`nbAmuletsTaken`+'. $nbLives .' where `id`='. $playerId .';');
+    mysqli_query($link, 'update players set `nbAmuletsTaken`=`nbAmuletsTaken`+1 where `id`='. $playerId .';');
 
     return mysqli_affected_rows($link);
 }
 function increaseNbTimesTransformed($loserId){
     $link = connect();
-    mysqli_query($link, 'update players set `nbTimesTransformed`=`nbTimesTransformed`+'. $nbLives .' where `id`='. $playerId .';');
+    mysqli_query($link, 'update players set `nbTimesTransformed`=`nbTimesTransformed`+1 where `id`='. $loserId .';');
 
     return mysqli_affected_rows($link);
 }
 function increaseNbPlayersTransformed($winnerId){
     $link = connect();
-    mysqli_query($link, 'update players set `nbPlayersTransformed`=`nbPlayersTransformed`+'. $nbLives .' where `id`='. $playerId .';');
+    mysqli_query($link, 'update players set `nbPlayersTransformed`=`nbPlayersTransformed`+1 where `id`='. $winnerId .';');
 
     return mysqli_affected_rows($link);
 }
 function increaseNbObjectsFound($playerId){
     $link = connect();
-    mysqli_query($link, 'update players set `nbObjectsFound`=`nbObjectsFound`+'. $nbLives .' where `id`='. $playerId .';');
+    mysqli_query($link, 'update players set `nbObjectsFound`=`nbObjectsFound`+1 where `id`='. $playerId .';');
 
     return mysqli_affected_rows($link);
 }
+
+
+
+
 
 ?>

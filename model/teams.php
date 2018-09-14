@@ -27,6 +27,15 @@ function getTeamById($teamId){
     return fetch_result($res);
 }
 
+
+//return all information (stats) about the team as an array (....)
+function getTeamIdByName($teamName){
+    $link = connect();
+    $res = mysqli_query($link, 'select id from teams where `name`="'. $teamName .'";');
+
+    return fetch_result($res);
+}
+
 //returns true if edition succeeded, false otherwise
 //points can be positive or negative
 //another function should be called to increase/decrease counters
@@ -46,8 +55,11 @@ function addBonusMalusToTeam($teamName, $cause){
 }
 
 //see if necessary or if getTeamByName/getAllTeams gives all stats
-function getNbMainObjectsFound($teamName){
+function getNbMainObjectsFound($teamId){
+    $link = connect();
+    $res = mysqli_query($link, 'select nbMainObjectsFoundByPlayers as nb from teams where `id`="'. $teamId .'";');
 
+    return fetch_result($res);
 }
 
 /*
@@ -62,29 +74,57 @@ Compteurs:
 - nbKillsByPlayers
 - nbMainObjectsFoundByPlayers
 */
-function increaseNbLivesTakenByPlayers($teamName, $nbLives){
+function increaseNbLivesTakenByPlayers($teamId, $nbLives){
+    $link = connect();
+    mysqli_query($link, 'update teams set `nbLivesTakenByPlayers`=`nbLivesTakenByPlayers`+'. $nbLives .' where `id`='. $teamId .';');
+
+    return mysqli_affected_rows($link);
+}
+function increaseNbPlayersArrested($teamId){
+	$link = connect();
+    mysqli_query($link, 'update teams set `nbPlayersArrested`=`nbPlayersArrested`+1 where `id`='. $teamId .';');
+
+    return mysqli_affected_rows($link);
 
 }
-function increaseNbPlayersArrested($teamName){
+function increaseNbPlayersLost($teamLoserId){
+	$link = connect();
+    mysqli_query($link, 'update teams set `nbPlayersLost`=`nbPlayersLost`+1 where `id`='. $teamLoserId .';');
 
-}
-function increaseNbPlayersLost($teamNameLoser){
+    return mysqli_affected_rows($link);
 
 }
 function increaseNbPlayersWon($teamWinnerId){
+	$link = connect();
+    mysqli_query($link, 'update teams set `nbPlayersWon`=`nbPlayersWon`+1 where `id`='. $teamWinnerId .';');
+
+    return mysqli_affected_rows($link);
+}
+function increaseNbEnemyLivesBroughtByPlayers($teamId, $nbLives){
+	$link = connect();
+    mysqli_query($link, 'update teams set `nbEnemyLivesBroughtByPlayers`=`nbEnemyLivesBroughtByPlayers`+'.$nbLives.' where `id`='. $teamId .';');
+
+    return mysqli_affected_rows($link);
 
 }
-function increaseNbEnemyLivesBroughtByPlayers($teamName, $nbLives){
+function increaseNbPlayersDeaths($teamLoserId){
+	$link = connect();
+    mysqli_query($link, 'update teams set `nbPlayersDeaths`=`nbPlayersDeaths`+1 where `id`='. $teamLoserId .';');
+
+    return mysqli_affected_rows($link);
 
 }
-function increaseNbPlayersDeaths($teamLoserName){
+function increaseNbKillsByPlayers($teamWinnerId){
+	$link = connect();
+    mysqli_query($link, 'update teams set `nbKillsByPlayers`=`nbKillsByPlayers`+1 where `id`='. $teamWinnerId .';');
 
+    return mysqli_affected_rows($link);
 }
-function increaseNbKillsByPlayers($teamWinnerName){
+function increaseNbMainObjectsFoundByPlayers($teamId){
+    $link = connect();
+    mysqli_query($link, 'update teams set `nbMainObjectsFoundByPlayers`=`nbMainObjectsFoundByPlayers`+1 where `id`='. $teamId .';');
 
-}
-function increaseNbMainObjectsFoundByPlayers($teamName){
-
+    return mysqli_affected_rows($link);
 }
 
 ?>

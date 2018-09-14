@@ -67,7 +67,7 @@ $causes = getCauses(null);
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-						    <button type="button" class="btn btn-success">New Cause</button>
+						    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#createCause">New Cause</button>
 						</div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -93,7 +93,7 @@ $causes = getCauses(null);
                                             echo '<td>'.$cause['name'].'</td>';
                                				echo '<td>'.$cause['category'].'</td>';
 											echo '<td>'.$cause['value'].'</td>';
-                                            echo '<td style="text-align: center;"><button type="button" class="btn btn-warning btn-circle"><i class="fa fa-edit"></i></button>   <button type="button" class="btn btn-danger btn-circle"><i class="fa fa-trash-o"></i></button>';							
+                                            echo '<td style="text-align: center;"><button type="button" class="btn btn-warning btn-circle" data-toggle="modal" data-target="#editCause" data-id="'. $cause['id'] .'" data-name="'. $cause['name'].'" data-value="'. $cause['value'] .'"><i class="fa fa-edit"></i></button>   <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#deleteCause" data-id="'. $cause['id'] .'" data-name="'. $cause['name'].'"><i class="fa fa-trash-o"></i></button>';							
 										    $parity = $parity + 1 % 2;
 										}
 								    ?>
@@ -101,7 +101,102 @@ $causes = getCauses(null);
                                 </tbody>
                             </table>
                             <!-- /.table-responsive -->
-                           
+                         <!-- Modal Create -->
+                            <div class="modal fade" id="createCause" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">New Cause</h4>
+                                        </div>
+										<form name="create" role="form" method="post" action="../controller/causes.php">
+
+											<div class="modal-body">
+													<div class="form-group">
+														<label for="name">Name</label>
+														<input type="text" name="name" class="form-control">
+													</div>
+													<div class="form-group">
+														<label for="category">Category</label>
+														<select name="category" class="form-control">
+															<option>Bonus</option>
+															<option>Malus</option>
+														</select>
+													</div>
+													<div class="form-group">
+														<label for="value">Value</label>
+														<input type="number" name="value" class="form-control">
+													</div>
+													<input type="hidden" name="action" value="create">
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+												<button type="submit" class="btn btn-primary">Create</button>
+											</div>
+										</form>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+							</div>
+								<!-- Modal Edit -->
+                            <div class="modal fade" id="editCause" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">Edit Cause</h4>
+                                        </div>
+										<form name="edit" role="form" method="post" action="../controller/causes.php">
+
+											<div class="modal-body">
+													<div class="form-group">
+														<label for="name">Name</label>
+														<input class="form-control name" type="text" name="name"  >
+													</div>
+													
+													<div class="form-group">
+														<label for="value">Value</label>
+														<input type="number" name="value" class="form-control value" >
+													</div>
+													<input type="hidden" name="id" class="id">
+													<input type="hidden" name="action" value="edit">
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+												<button type="submit" class="btn btn-primary">Save</button>
+											</div>
+										</form>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div> 
+							<div class="modal fade" id="deleteCause" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">Delete Cause</h4>
+                                        </div>
+										<form name="delete" role="form" method="post" action="../controller/causes.php">
+
+											<div class="modal-body">
+													<p> Delete this cause? </p>
+													<input disabled class="form-control name">
+													<input type="hidden" name="id" class="id">
+													<input type="hidden" name="action" value="delete">
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+												<button type="submit" class="btn btn-primary">Yes</button>
+											</div>
+										</form>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div> 
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -149,6 +244,24 @@ $causes = getCauses(null);
 			info: false
         });
     });
+	$('#editCause').on('show.bs.modal', function (event){
+        var button = $(event.relatedTarget)
+		var id = button.data('id')
+        var name = button.data('name')
+		var value = button.data('value')
+		var modal = $(this)
+		modal.find('.modal-body .id').val(id)
+		modal.find('.modal-body .name').val(name)
+		modal.find('.modal-body .value').val(value)
+	})
+	$('#deleteCause').on('show.bs.modal', function (event){
+        var button = $(event.relatedTarget)
+		var id = button.data('id')
+        var name = button.data('name')
+		var modal = $(this)
+		modal.find('.modal-body .id').val(id)
+		modal.find('.modal-body .name').val(name)
+	})
     </script>
 
 </body>

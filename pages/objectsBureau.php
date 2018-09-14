@@ -90,7 +90,7 @@ $objects = getObjects();
 											
                                             echo '<td style="text-align: center;">';
 											if($object['foundby'] == NULL){
-												echo '<button type="button" class="btn btn-success btn-circle"><i class="fa fa-arrow-right"></i></button>';
+												echo '<button type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#found" data-object="'.$object['id'].'"><i class="fa fa-arrow-right"></i></button>';
 											}
 											echo '</td>';							
 										    echo '</tr>';
@@ -100,7 +100,37 @@ $objects = getObjects();
                                 </tbody>
                             </table>
                             <!-- /.table-responsive -->
-                           
+                        <!-- Modal change-team -->
+						<div class="modal fade" id="found" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+										<h4 class="modal-title" id="myModalLabel">Object Found</h4>
+									</div>
+									<form name="lives" role="form" method="post" action="../controller/points.php">
+
+										<div class="modal-body">
+												<div class="form-group">
+													<label>Found By</label>
+													<input type="text" name="id" autofocus class="form-control">
+													<input type="text" name="id2" class="form-control">
+													<input type="text" name="id3" class="form-control">
+												</div>
+												<input type="hidden" name="src" value="bring-object">
+												<input type="hidden" name="objectId" class="object">
+											
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+											<button type="submit" class="btn btn-primary">Ok</button>
+										</div>
+									</form>
+								</div>
+								<!-- /.modal-content -->
+							</div>
+							<!-- /.modal-dialog -->
+						</div>				   
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -145,6 +175,12 @@ $objects = getObjects();
 			]
         });
     });
+	$('#found').on('show.bs.modal', function (event){
+        var button = $(event.relatedTarget)
+		var object = button.data('object')
+		var modal = $(this)
+		modal.find('.modal-body .object').val(object)
+	})
     </script>
 
 </body>

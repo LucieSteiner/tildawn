@@ -1,50 +1,15 @@
 <?php
+require('../controller/grotte.php');
 
-$topAllTeams = array(
-    array("Dark", "Vador", "Usine", 12537),
-	array("Jon", "Snow", "Zombie", 9872),
-	array("Michael", "Jackson", "Zombie", 8800),
-	array("Super", "Mario", "Caserne", 6500),
-	array("Bob", "Leponge", "Asile", 3200)
-);
+$topAllTeams = topPlayersAllTeams(5);
 
-$topEachTeam = array(
-    array(
-	    array("Peter", "Pan", 2700),
-	    array("Bat", "Man", 2150),
-	    array("Johnny", "Depp", 1230),
-	    array("Maya", "Labeille", 520),
-	    array("Frodon", "Sacquet", 472) 
-    ),
-	array(
-	    array("Bob", "Leponge", 3200),
-	    array("Fifi", "Brindacier", 2800),
-	    array("Fée", "Clochette", 2510),
-	    array("Maitre", "Yoda", 1970),
-	    array("Fred", "Astaire", 1500)
-	),
-	array(
-	    array("Super", "Mario", 6500),
-	    array("René", "Rentsch", 3100),
-	    array("Albus", "Dumbledore", 2900),
-	    array("Brad", "Pitt", 2100),
-	    array("Twilight", "Sparkle", 1800)
-	),
-	array(
-	    array("Dark", "Vador", 12537),
-	    array("Rainbow", "Dash", 3170),
-	    array("Daenerys", "Targaryen", 2910),
-	    array("Mister", "Darcy", 1600),
-	    array("Gollum", "Gollum", 1400)
-	),
-	array(
-	    array("Jon", "Snow", 9872),
-	    array("Michael", "Jackson", 8800),
-	    array("Pinkie", "Pie", 3000),
-	    array("Ta", "Mère", 1300),
-	    array("Vladimir", "Poutine", 750)
-	)
-);
+$topAsile = topPlayersByTeam(1, 5);
+$topUsine = topPlayersByTeam(2, 5);
+$topAbattoirs = topPlayersByTeam(3, 5);
+$topCaserne = topPlayersByTeam(4, 5);
+$topZombie = topPlayersByTeam(5, 5);
+
+//TODO: carrousel (optionnel)
 
 ?>
 <html>
@@ -114,10 +79,10 @@ $topEachTeam = array(
 						foreach ($topAllTeams as $player){
 							echo '<tr >';
 					
-							echo '<td>'.$player[0].'</td>';
-							echo '<td>'.$player[1].'</td>';
-							echo '<td>'.$player[2].'</td>';
-							echo '<td>'.$player[3].'</td>';
+							echo '<td>'.$player['firstname'].'</td>';
+							echo '<td>'.$player['lastname'].'</td>';
+							echo '<td>'.$player['team'].'</td>';
+							echo '<td>'.$player['score'].'</td>';
 							
 							echo '</tr>';
 						}
@@ -132,19 +97,19 @@ $topEachTeam = array(
 	<div class="col-lg-4">
 		<div class="panel panel-green">
 			<div class="panel-heading">
-				Top 5 Players - Abattoirs
+				Top 5 Players - Asile
 			</div>
 			<div class="panel-body">
 			<table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
 				
 				<tbody>
 					<?php 
-						foreach ($topEachTeam[0] as $player){
+						foreach ($topAsile as $player){
 							echo '<tr >';
 					
-							echo '<td>'.$player[0].'</td>';
-							echo '<td>'.$player[1].'</td>';
-							echo '<td>'.$player[2].'</td>';
+							echo '<td>'.$player['firstname'].'</td>';
+							echo '<td>'.$player['lastname'].'</td>';
+							echo '<td>'.$player['score'].'</td>';
 							
 							echo '</tr>';
 						}
@@ -158,19 +123,19 @@ $topEachTeam = array(
 	<div class="col-lg-4">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				Top 5 Players - Asile
+				Top 5 Players - Usine
 			</div>
 			<div class="panel-body">
 			    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
 				
 				<tbody>
 					<?php 
-						foreach ($topEachTeam[1] as $player){
+						foreach ($topUsine as $player){
 							echo '<tr >';
 					
-							echo '<td>'.$player[0].'</td>';
-							echo '<td>'.$player[1].'</td>';
-							echo '<td>'.$player[2].'</td>';
+							echo '<td>'.$player['firstname'].'</td>';
+							echo '<td>'.$player['lastname'].'</td>';
+							echo '<td>'.$player['score'].'</td>';
 							
 							echo '</tr>';
 						}
@@ -186,19 +151,19 @@ $topEachTeam = array(
 	<div class="col-lg-4">
 		<div class="panel panel-red">
 			<div class="panel-heading">
-				Top 5 Players - Caserne
+				Top 5 Players - Abattoirs
 			</div>
 			<div class="panel-body">
 			    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
 				
 				<tbody>
 					<?php 
-						foreach ($topEachTeam[2] as $player){
+						foreach ($topAbattoirs as $player){
 							echo '<tr >';
 					
-							echo '<td>'.$player[0].'</td>';
-							echo '<td>'.$player[1].'</td>';
-							echo '<td>'.$player[2].'</td>';
+							echo '<td>'.$player['firstname'].'</td>';
+							echo '<td>'.$player['lastname'].'</td>';
+							echo '<td>'.$player['score'].'</td>';
 							
 							echo '</tr>';
 						}
@@ -212,20 +177,19 @@ $topEachTeam = array(
 	<div class="col-lg-4">
 		<div class="panel panel-yellow">
 			<div class="panel-heading">
-				Top 5 Players - Usine
+				Top 5 Players - Caserne
 			</div>
 			<div class="panel-body">
 			    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
 				
 				<tbody>
 					<?php 
-						foreach ($topEachTeam[3] as $player){
+						foreach ($topCaserne as $player){
 							echo '<tr >';
 					
-							echo '<td>'.$player[0].'</td>';
-							echo '<td>'.$player[1].'</td>';
-							echo '<td>'.$player[2].'</td>';
-							
+							echo '<td>'.$player['firstname'].'</td>';
+							echo '<td>'.$player['lastname'].'</td>';
+							echo '<td>'.$player['score'].'</td>';
 							echo '</tr>';
 						}
 					?>
@@ -238,19 +202,19 @@ $topEachTeam = array(
 	<div class="col-lg-4">
 		<div class="panel panel-grey">
 			<div class="panel-heading">
-				Top 5 Players - Zombies
+				Top 5 Players - Zombie
 			</div>
 			<div class="panel-body">
 			    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
 				
 				<tbody>
 					<?php 
-						foreach ($topEachTeam[4] as $player){
+						foreach ($topZombie as $player){
 							echo '<tr >';
 					
-							echo '<td>'.$player[0].'</td>';
-							echo '<td>'.$player[1].'</td>';
-							echo '<td>'.$player[2].'</td>';
+							echo '<td>'.$player['firstname'].'</td>';
+							echo '<td>'.$player['lastname'].'</td>';
+							echo '<td>'.$player['score'].'</td>';
 							
 							echo '</tr>';
 						}

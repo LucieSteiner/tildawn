@@ -35,7 +35,7 @@ function getAllCauses(){
 //category cannot be changed
 function editCause($causeId, $newName, $newValue){
     $link = connect();
-    mysqli_query($link, 'update causes set `name`='. $newName .', `value`='. $newValue .' where `id`='. $causeId .';');
+    mysqli_query($link, 'update causes set `name`="'. $newName .'", `value`='. $newValue .' where `id`='. $causeId .';');
 
     return mysqli_affected_rows($link);
 }
@@ -43,7 +43,7 @@ function editCause($causeId, $newName, $newValue){
 //returns true if deletion succeeded, false otherwise
 function deleteCause($causeId){
     $link = connect();
-    mysqli_query($link, 'delete * from causes where `id`= '. $causeId .';');
+    mysqli_query($link, 'delete from causes where `id`= '. $causeId .';');
 
     return mysqli_affected_rows($link);
 }

@@ -3,6 +3,7 @@
 require('../controller/azure.php');
 //getObjects ->id, name, value, foundby 
 $objects = getObjects();
+$teams = getTeams();
 
 //add export (format?)
 //edit (value ou foundby) -> dialog
@@ -92,7 +93,7 @@ $objects = getObjects();
                                             echo '<td>'.$object['name'].'</td>';
                                				echo '<td>'.$object['value'].'</td>';
 											echo '<td>'.$object['foundby'].'</td>';
-                                            echo '<td style="text-align: center;"><button type="button" class="btn btn-warning btn-circle"><i class="fa fa-edit"></i></button></td>';							
+                                            echo '<td style="text-align: center;"><button type="button" class="btn btn-warning btn-circle" data-toggle="modal" data-target="#editObject" data-id="'. $object['id'] .'" data-name="'. $object['name'] .'" data-value="'. $object['value'] .'" data-foundby="'. $object['foundby'].'"><i class="fa fa-edit"></i></button></td>';							
 										    $parity = $parity + 1 % 2;
 										}
 								    ?>
@@ -100,7 +101,46 @@ $objects = getObjects();
                                 </tbody>
                             </table>
                             <!-- /.table-responsive -->
-                           
+                        	<!-- Modal Edit -->
+                            <div class="modal fade" id="editObject" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">Edit Object</h4>
+                                        </div>
+										<form name="edit" role="form" method="post" action="../controller/objects.php">
+
+											<div class="modal-body">
+													<div class="form-group">
+														<label for="name">Name</label>
+														<input class="form-control name" type="text" name="name" >
+													</div>
+													
+													<div class="form-group">
+														<label for="value">Value</label>
+														<input type="number" name="value" class="form-control value" >
+													</div>
+													<div class="form-group">
+														<label for="value">Found by</label>
+														<select name="foundby" class="form-control foundby">
+															<?php foreach ($teams as $team){
+																echo '<option>'. $team['name'] .'</option>';	
+															}?>
+														</select>
+													</div>
+													<input type="hidden" name="id" class="id">
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+												<button type="submit" class="btn btn-primary">Save</button>
+											</div>
+										</form>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>    
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -145,6 +185,18 @@ $objects = getObjects();
 			]
         });
     });
+	$('#editObject').on('show.bs.modal', function (event){
+        var button = $(event.relatedTarget)
+		var id = button.data('id')
+        var name = button.data('name')
+		var value = button.data('value')
+		var foundby = button.data('foundby')
+		var modal = $(this)
+		modal.find('.modal-body .id').val(id)
+		modal.find('.modal-body .name').val(name)
+		modal.find('.modal-body .value').val(value)
+		modal.find('.modal-body .foundby').val(foundby)
+	});
     </script>
 
 </body>

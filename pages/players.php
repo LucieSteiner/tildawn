@@ -101,7 +101,7 @@ $causesMalus = getCauses("Malus");
                                             echo '<td>'.$player['lastname'].'</td>';
                                             echo '<td>'.$player['team'].'</td>';
                                             echo '<td>'.$player['score'].'</td>';
-											echo '<td>'.calculateWeightedScore($player).'</td>';
+											echo '<td>'.calculateWeightedScore($player['score'], $player['teamScore']).'</td>';
                                             echo '<td style="text-align:center;"><button type="button" class="btn btn-success btn-circle" data-toggle="modal" data-player="'.$player['id'].'" data-target="#addBonus"><i class="fa fa-plus"></i></button>   <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-player="'.$player['id'].'" data-target="#addMalus"><i class="fa fa-minus"></i></button></td>';							
 										    echo '</tr>';
 										}

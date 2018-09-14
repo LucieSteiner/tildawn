@@ -6,12 +6,12 @@ function buyLives($playerId, $nbLives){
 	$valuePlayer = -15;
 	$valueTeam = -7;
 	
-	$teamName = getPlayerById($playerId)['team'];
+	$teamId = getPlayerById($playerId)[0]['teamId'];
 	
 	increaseNbOwnLivesTaken($playerId, $nbLives);
-	increaseNbLivesTakenByPlayers($teamName, $nbLives);
+	increaseNbLivesTakenByPlayers($teamId, $nbLives);
 	editPlayerScore($playerId, $nbLives*$valuePlayer, "own-lives-taken");
-	editTeamScore($teamName, $nbLives*$valueTeam, "own-lives_taken");
+	editTeamScore($teamId, $nbLives*$valueTeam, "own-lives_taken");
 }
 //arrested: player and team lose points
 //arrest: player wins points
@@ -20,14 +20,14 @@ function getArrested($loserId, $winnerId){
 	$valueLoserTeam = -150;
 	$valueWinner = 100;
 	
-	$teamName = getPlayerById($loserId)['team'];
-	
+	$teamId = getPlayerById($loserId)[0]['teamId'];
+	echo $teamId;
 	increaseNbTimesArrested($loserId);
-	increaseNbPlayersArrested($teamName);
+	increaseNbPlayersArrested($teamId);
 	increaseNbCheatersCaught($winnerId);
 	
 	editPlayerScore($loserId, $valueLoser, "cheated");
-	editTeamScore($teamName, $valueLoserTeam, "cheated");
+	editTeamScore($teamId, $valueLoserTeam, "cheated");
 	editPlayerScore($winnerId, $valueWinner, "caught-cheater");
 }
 
@@ -48,18 +48,20 @@ function changeTeam($loserId, $winnerId){
 	$valueWinner = 100;
 	$valueWinnerTeam = 50;
 	
-	$teamNameLoser = getPlayerById($loserId)['team'];
-	$teamNameWinner = getPlayerById($winnerId)['team'];
+	$teamLoserId = getPlayerById($loserId)[0]['teamId'];
+	$teamWinnerId = getPlayerById($winnerId)[0]['teamId'];
 	
 	increaseNbTimesTransformed($loserId);
-	increaseNbPlayersLost($teamNameLoser);
+	increaseNbPlayersLost($teamLoserId);
 	increaseNbPlayersTransformed($winnerId);
 	increaseNbPlayersWon($teamWinnerId);
 	
 	editPlayerScore($loserId, $valueLoser, "got-transformed");
-	editTeamScore($teamNameLoser, $valueLoserTeam, "lost-player");
+	editTeamScore($teamLoserId, $valueLoserTeam, "lost-player");
 	editPlayerScore($winnerId, $valueWinner, "transformed-player");
-	editTeamScore($teamNameWinner, $valueWinnerTeam, "won-player");
+	editTeamScore($teamWinnerId, $valueWinnerTeam, "won-player");
+	
+	changePlayerTeam($loserId, $teamWinnerId);
 }
 
 //player and team win points
@@ -67,13 +69,13 @@ function bringLives($playerId, $nbLives){
 	$valuePlayer = 10;
 	$valueTeam = 5;
 	
-	$teamName = getPlayerById($playerId)['team'];
+	$teamId = getPlayerById($playerId)[0]['teamId'];
 
     increaseNbEnemyLivesGiven($playerId, $nbLives);
-	increaseNbEnemyLivesBroughtByPlayers($teamName, $nbLives);
+	increaseNbEnemyLivesBroughtByPlayers($teamId, $nbLives);
 	
 	editPlayerScore($playerId, $nbLives*$valuePlayer, "brought-lives");
-	editTeamScore($teamName, $nbLives*$valueTeam, "brought-lives");
+	editTeamScore($teamId, $nbLives*$valueTeam, "brought-lives");
 	
 }
 
@@ -83,47 +85,53 @@ function bringAmulet($playerId, $amulet){
 	$valueLoser = -50; 
 	$valueLoserTeam = -50;
 	$valueWinner = 70;
-	$nbDeaths = getPlayerById['nbDeaths']; 
+	
+	$winnerId = $playerId;
+	$loserId = getPlayerIdByAmulet($amulet)[0]['id'];
+	$nbDeaths = getPlayerById($loserId)[0]['nbDeaths']; 
+	echo $nbDeaths;
 	for($i = 0; $i < $nbDeaths; $i++){
-		$valueWinner = $valueWinner/4;
+		$valueWinner = round($valueWinner - $valueWinner/4);
 	}
+	echo $valueWinner; 
 	$valueWinnerTeam = $valueWinner/2;
 	
-	$teamNameLoser = getPlayerById($loserId)['team'];
-	$teamNameWinner = getPlayerById($winnerId)['team'];
+	$teamLoserId = getPlayerById($loserId)[0]['teamId'];
+	$teamWinnerId = getPlayerById($winnerId)[0]['teamId'];
 	
 	increaseNbDeaths($loserId);
-	increaseNbPlayersDeaths($teamLoserName);
+	increaseNbPlayersDeaths($teamLoserId);
 	increaseNbKills($winnerId);
-	increaseNbKillsByPlayers($teamWinnerName);
+	increaseNbKillsByPlayers($teamWinnerId);
 	
 	editPlayerScore($loserId, $valueLoser, "death");
-	editTeamScore($teamNameLoser, $valueLoserTeam,"death");
+	editTeamScore($teamLoserId, $valueLoserTeam,"death");
 	editPlayerScore($winnerId, $valueWinner, "kill");
-	editTeamScore($teamNameWinner, $valueWinnerTeam, "kill");
+	editTeamScore($teamWinnerId, $valueWinnerTeam, "kill");
 }
 
 //player + 2 max win points, team win points
 function bringObject($playersId, $objectId){
-	$object = getObjectById($objectId);
+	$object = getObjectById($objectId)[0];
 	$valuePlayer = $object['value'];
 	$valueTeam = $valuePlayer;
-	$teamName = getPlayerById($playersId[0])['team'];
+	$teamId = getPlayerById($playersId[0])[0]['teamId'];
 	
-	$nbObjects = getNbMainObjectsFound($teamName);
+	$nbObjectsArray = getNbMainObjectsFound($teamId);
+	$nbObjects = $nbObjectsArray[0]['nb'];
 	if($object['main'] == 1){
 		$valueTeam += (20 * pow(2, $nbObjects));
-		increaseNbObjectsFoundByPlayers($teamName);
+		increaseNbMainObjectsFoundByPlayers($teamId);
 	}
 	$valueByPlayer = $valuePlayer/count($playersId);
-	foreach($playerId as $playersId){
+	foreach($playersId as $playerId){
 		increaseNbObjectsFound($playerId);
 		editPlayerScore($playerId, $valueByPlayer, "object");
 	}
 	
-	editTeamScore($teamName, $valueTeam, "object");
+	editTeamScore($teamId, $valueTeam, "object");
 	
-	editObject($object['id'], $object['name'], $object['value'], $teamName);
+	editObject($object['id'], $object['name'], $object['value'], $teamId);
 	
 }
 

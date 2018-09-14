@@ -17,7 +17,9 @@ define("DB", "tildawn");
 
 /* Mysql related functions */
 function connect() {
-    return mysqli_connect(HOST, USER, PWD, DB);
+	$link = mysqli_connect(HOST, USER, PWD, DB);
+	mysqli_set_charset($link, "utf8");
+    return $link;
 }
 
 function fetch_result($res) {
@@ -27,7 +29,7 @@ function fetch_result($res) {
             $result[] = $row;
         }
 	}else{
-		//echo "No result";
+		echo "No result";
 	}
     return $result;
 }

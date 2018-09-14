@@ -8,7 +8,14 @@ CREATE TABLE Teams (
 	name VARCHAR(16) NOT NULL UNIQUE,
 	color VARCHAR(8) NOT NULL UNIQUE,
 	score INT DEFAULT 0,
-	-- add counters 
+	nbLivesTakenByPlayers INT DEFAULT 0,
+	nbPlayersArrested INT DEFAULT 0,
+	nbPlayersLost INT DEFAULT 0,
+	nbPlayersWon INT DEFAULT 0,
+	nbEnemyLivesBroughtByPlayers INT DEFAULT 0,
+	nbPlayersDeaths INT DEFAULT 0,
+	nbKillsByPlayers INT DEFAULT 0,
+	nbMainObjectsFoundByPlayers INT DEFAULT 0,
 	
 	PRIMARY KEY(id)
 );
@@ -29,7 +36,9 @@ CREATE TABLE Players (
 	nbAmuletsTaken INT DEFAULT 0,
 	nbCheatersCaught INT DEFAULT 0, 
 	nbTimesArrested INT DEFAULT 0,
-	-- probably missing counters
+	nbTimesTransformed INT DEFAULT 0,
+	nbPlayersTransformed INT DEFAULT 0,
+	nbObjectsFound INT DEFAULT 0,
 	
 	PRIMARY KEY(id),
 	FOREIGN KEY(teamId) REFERENCES Teams(id)
