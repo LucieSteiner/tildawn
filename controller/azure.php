@@ -8,34 +8,31 @@ require("../controller/common.php");
 
 //Dashboard
 function getBestTeamScore(){
-	$teams = getAllTeams();
-	if(count($teams) > 0){
-		$max = $teams[0]['score'];
-		foreach($teams as $team){
-			if($team['score'] > $max){
-				$max = $team['score'];
-			}
-			
+	$special = getAllTeamSpecial();
+	
+	$max = $special[0]['total'];
+	for($i = 0; $i < count($special); $i++){
+		if($special[$i]['total'] > $max){
+			$max = $special[$i]['total'];
 		}
-		return $max;
+		
 	}
-	return 0;
+	return $max;
+
 	
 }
 
 //Dashboard
 function getBestPlayerScore(){
-	$players = getAllPlayers();
-	if(count($players) > 0){
-		$max = $players[0]['score'];
-		foreach($players as $player){
-			if($player['score'] > $max){
-				$max = $player['score'];
-			}
+	$special = getAllPlayerSpecial();
+	$max = $special[0]['total'];
+	for($i = 0; $i < count($special); $i++){
+		if($special[$i]['total'] > $max){
+			$max = $special[$i]['total'];
 		}
-		return $max;
 	}
-	return 0;
+	return $max;
+
 	
 }
 
@@ -70,28 +67,8 @@ function getNbPlayersByTeam(){
 }
 
 //Causes
-function getCauses($category){
-	$result = array();
-	$causes = getAllCauses();
-	if($category == null){
-		$result = $causes;
-	}
-	
-	if($category == "Bonus"){
-		foreach($causes as $cause){
-			if($cause["category"] == "Bonus"){
-				array_push($result, $cause);
-			}
-		}
-	}
-	else if($category == "Malus"){
-		foreach($causes as $cause){
-			if($cause["category"] == "Malus"){
-				array_push($result, $cause);
-			}
-		}
-	}
-	return $result;
+function getCauses(){
+	return getAllCauses();
 	
 }
 
@@ -104,5 +81,6 @@ function getMessages(){
 function getAlerts(){
 	return getAllAlerts();
 }
+
 
 ?>

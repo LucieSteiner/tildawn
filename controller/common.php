@@ -2,6 +2,7 @@
 require("../model/players.php");
 require("../model/teams.php");
 require("../model/objects.php");
+error_reporting(E_ALL ^ E_NOTICE); 
 
 
 function getPlayers(){	
@@ -21,20 +22,22 @@ function getTeams(){
 	return getAllTeams();
 	
 }
+function getTeam($teamId){
+	return getTeamById($teamId);
+}
 
 function getObjects(){
 	return getAllObjects();
 }
 
 //returns an array of players (id, firstname, lastname, team, score
-function topPlayers($nb, $players){
-	
+function topPlayers($nb, $players, $teams, $specialTeam, $special){
 	$to_sort = array();
 	$firstname = array();
 	$lastname = array();
 	$team = array();
 	foreach ($players as $player){
-		$to_sort[$player['id']] = calculateWeightedScore($player['score'], $player['teamScore']);
+		$to_sort[$player['id']] = calculateWeightedScore($special[$player['id']-1]['total'], $specialTeam[$player['teamId']-1]['total']+$teams[$player['teamId']-1]['score']);
 		$firstname[$player['id']] = $player['firstname'];
 		$lastname[$player['id']] = $player['lastname'];
 		$team[$player['id']] = $player['team'];
@@ -48,11 +51,10 @@ function topPlayers($nb, $players){
 	}
 	return $result;
 }
-function topTeams(){
-	$teams = getAllTeams();
+function topTeams($teams, $special){
 	$to_sort = array();
 	foreach ($teams as $team){
-		$to_sort[$team['name']] = $team['score'];
+		$to_sort[$team['name']] = $special[$team['id']-1]['total']+ $team['score'];
 	}
 	arsort($to_sort);
 	$result = array();
@@ -63,5 +65,17 @@ function topTeams(){
 	return $result;
 	return $to_sort;
 	
+}
+function getPlayerScoreWithSpecial($player){
+	return $player['score'] + getSpecialByPlayer($player['id'])[0]['total'];
+}
+function getTeamScoreWithSpecial($team){
+	return $team['score'] + getSpecialByTeam($team['id'])[0]['total'];
+}
+function getAllPlayerSpecial(){
+	return getSpecialAllPlayers();
+}
+function getAllTeamSpecial(){
+	return getSpecialAllTeams();
 }
 ?>

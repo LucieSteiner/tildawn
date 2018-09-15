@@ -1,6 +1,6 @@
 <?php
 require("../controller/azure.php");
-
+error_reporting(E_ALL ^ E_NOTICE); 
 //getBestTeamScore()
 //getBestPlayerScore()
 //getNbActiveAlerts()
@@ -9,7 +9,8 @@ require("../controller/azure.php");
 //getNbCauses()
 //getNbPlayersByTeam()
 $nbPlayersByTeam = getNbPlayersByTeam();
-$teams = getTeams();
+$specialTeam = getAllTeamSpecial();
+$teams = getAllTeams();
 //getTeamScoreOverTime -> a voir plus tard
 
 
@@ -251,11 +252,11 @@ $teams = getTeams();
         Morris.Donut({
 			element: 'donut-chart',
 			data: [
-				{label: "Caserne", value: <?php echo $nbPlayersByTeam[3]['nb'];?>, color: "#d9534f"},
+				{label: "Caserne", value: <?php echo $nbPlayersByTeam[3]['nb'];?>, color: "#337ab7"},
 				{label: "Usine", value: <?php echo $nbPlayersByTeam[1]['nb'];?>, color: "#f0ad4e"},
 				{label: "Zombie", value: <?php echo $nbPlayersByTeam[4]['nb'];?>, color: "#a8b4bd"},
 				{label: "Abattoirs", value: <?php echo $nbPlayersByTeam[2]['nb'];?>, color: "#5cb85c"},
-				{label: "Asile", value: <?php echo $nbPlayersByTeam[0]['nb'];?>, color: "#337ab7"}
+				{label: "Asile", value: <?php echo $nbPlayersByTeam[0]['nb'];?>, color: "#d9534f"}
 			],
 			resize: true,
 			redraw: true
@@ -264,17 +265,16 @@ $teams = getTeams();
 			element: 'bar-chart',
 			data: [
 			  { y: '', 
-			  a: <?php echo $teams[3]['score'];?>, 
-			  b: <?php echo $teams[1]['score'];?>, 
-			  c: <?php echo $teams[4]['score'];?>, 
-			  d: <?php echo $teams[2]['score'];?>, 
-			  e: <?php echo $teams[0]['score'];?>, }
+			  a: <?php echo $specialTeam[3]['total'] + $teams[3]['score'];?>, 
+			  b: <?php echo $specialTeam[1]['total'] + $teams[1]['score'];?>, 
+			  c: <?php echo $specialTeam[4]['total'] + $teams[4]['score'];?>, 
+			  d: <?php echo $specialTeam[2]['total'] + $teams[2]['score'];?>, 
+			  e: <?php echo $specialTeam[0]['total'] + $teams[0]['score'];?>, }
 			],
 			xkey: 'y',
 			ykeys: ['a', 'b', 'c', 'd', 'e'],
 			labels: ['Caserne', 'Usine', 'Zombie', 'Abattoirs', 'Asile'],
-			lineColors: ['#d9534f','#f0ad4e', '#a8b4bd', '#5cb85c', '#337ab7'],
-			lineWidth: '3px',
+			barColors: ['#337ab7','#f0ad4e', '#a8b4bd', '#5cb85c', '#d9534f'],
 			resize: true,
 			redraw: true,
 			hideHover: true

@@ -1,16 +1,22 @@
 <?php
 require('../controller/grotte.php');
-$teamScores = topTeams();
-$topAllTeams = topPlayersAllTeams(10);
-
-$topAsile = topPlayersByTeam(1, 10);
-$topUsine = topPlayersByTeam(2, 10);
-$topAbattoirs = topPlayersByTeam(3, 10);
-$topCaserne = topPlayersByTeam(4, 10);
-$topZombie = topPlayersByTeam(5, 10);
-
+$players = getPlayers();
+$teams = getTeams();
+$playersByTeam = getPlayersByTeam();
 $messages = getActiveMessages();
 $alerts = getActiveAlerts();
+$special = getAllPlayerSpecial();
+$specialTeam = getAllTeamSpecial();
+$teamScores = topTeams($teams, $specialTeam);
+$topAllTeams = topPlayersAllTeams($players, 10, $teams, $teamSpecial, $special);
+
+$topAsile = topPlayersByTeam($playersByTeam[0], 1, 10, $teams, $teamSpecial, $special);
+$topUsine = topPlayersByTeam($playersByTeam[1], 2, 10, $teams, $teamSpecial, $special);
+$topAbattoirs = topPlayersByTeam($playersByTeam[2], 3, 10, $teams, $teamSpecial, $special);
+$topCaserne = topPlayersByTeam($playersByTeam[3], 4, 10, $teams, $teamSpecial, $special);
+$topZombie = topPlayersByTeam($playersByTeam[4],5, 10, $teams, $teamSpecial, $special);
+
+
 
 
 ?>
@@ -138,7 +144,7 @@ $alerts = getActiveAlerts();
       </div>
 
       <div class="item">
-        <div class="panel panel-green">
+        <div class="panel panel-red">
 			<div class="panel-heading">
 				Top 10 Players - Asile
 			</div>
@@ -165,7 +171,7 @@ $alerts = getActiveAlerts();
       </div>
     
       <div class="item">
-        <div class="panel panel-primary">
+        <div class="panel panel-yellow">
 			<div class="panel-heading">
 				Top 10 Players - Usine
 			</div>
@@ -192,7 +198,7 @@ $alerts = getActiveAlerts();
       </div>
 
       <div class="item">
-        <div class="panel panel-red">
+        <div class="panel panel-green">
 			<div class="panel-heading">
 				Top 10 Players - Abattoirs
 			</div>
@@ -218,7 +224,7 @@ $alerts = getActiveAlerts();
 		</div>
       </div>
 	  <div class="item">
-	    <div class="panel panel-yellow">
+	    <div class="panel panel-primary">
 			<div class="panel-heading">
 				Top 10 Players - Caserne
 			</div>
@@ -296,6 +302,9 @@ $(document).ready(function(){
     // Activate Carousel
     $("#myCarousel").carousel({interval: 10000});
 });
+setTimeout(function(){
+   window.location.reload(1);
+}, 60000);
 </script>
 
 <!-- jQuery -->

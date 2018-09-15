@@ -78,12 +78,14 @@ function getPlayerIdByAmulet($amulet){
     echo mysqli_error($link);
     return fetch_result($res);
 }
-function getPlayersByTeam($teamId){
+function getPlayersByTeam(){
 	$link = connect();
-    $res = mysqli_query($link, "select players.id as id, amulet, firstname, lastname, teams.name as team, players.teamId as teamId, players.score as score, teams.score as teamScore, gender, `group`, nbDeaths, nbKills, nbOwnLivesTaken, nbEnemyLivesGiven, nbTimesArrested, nbCheatersCaught from players INNER JOIN teams ON players.teamId = teams.id WHERE players.teamId = '". $teamId . "';");
-    
-
-    return fetch_result($res);
+	$result = array();
+	for($i = 1; $i <= 5; $i++){
+		$res = mysqli_query($link, "select players.id as id, amulet, firstname, lastname, teams.name as team, players.teamId as teamId, players.score as score, teams.score as teamScore, gender, `group`, nbDeaths, nbKills, nbOwnLivesTaken, nbEnemyLivesGiven, nbTimesArrested, nbCheatersCaught from players INNER JOIN teams ON players.teamId = teams.id WHERE players.teamId = '". $i . "';");
+		array_push($result, fetch_result($res));
+	}
+    return $result;
 
 }
 function countPlayersByTeam(){
@@ -121,6 +123,18 @@ function addBonusMalusToPlayer($playerId, $cause){
 	mysqli_query($link, 'insert into specialPlayerLog(causeId, playerId, scoreImpact) VALUES ('.$cause['id'].', '.$playerId.', '.$cause['value'].');') or die(mysqli_error($link));
     return mysqli_affected_rows($link);
 }
+
+function getSpecialByPlayer($playerId){
+	$link = connect();
+	$res = mysqli_query($link, 'select SUM(scoreImpact) as total from SpecialPlayerLog where $playerId='.$playerId.';');
+	return fetch_result($res);
+}
+function getSpecialAllPlayers(){
+	$link = connect();
+	$res = mysqli_query($link, 'select playerId as id, SUM(scoreImpact) as total from SpecialPlayerLog group by playerId;');
+	return fetch_result($res);
+}
+
 
 function changePlayerTeam($loserId, $teamWinnerId){
 	$link = connect();

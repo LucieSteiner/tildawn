@@ -7,16 +7,13 @@ require('../model/messages.php');
 - top5PlayersByTeam
 */
 
-function topPlayersAllTeams($nb){
-	$players = getAllPlayers();
-	return topPlayers($nb, $players);
+function topPlayersAllTeams($players, $nb, $teams, $teamSpecial, $special){
+	return topPlayers($nb, $players, $teams, $teamSpecial, $special);
 }
 
-function topPlayersByTeam($teamId, $nb){
-
-	$players = getPlayersByTeam($teamId);
+function topPlayersByTeam($players, $teamId, $nb, $teams, $teamSpecial, $special){
 	
-	return topPlayers($nb, $players);
+	return topPlayers($nb, $players, $teams, $teamSpecial, $special);
 }
 
 function getActiveMessages(){

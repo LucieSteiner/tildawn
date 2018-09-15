@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <?php 
+error_reporting(E_ALL ^ E_NOTICE); 
 require("../controller/azure.php");
 //getTeams -> name, score
 $teams = getTeams();
 
-$causesBonus = getCauses("Bonus");
-$causesMalus = getCauses("Malus");
+$causes = getCauses();
 //getCauses -> cause, category, value
-
+$specialTeam = getAllTeamSpecial();
 //add link to team information
 //export scoreboard (format?)
 ?>
@@ -84,9 +84,10 @@ $causesMalus = getCauses("Malus");
                                 <tbody>
 								    <?php 
 									    foreach ($teams as $team){
+										$score = $team['score']+$specialTeam[$team['id']-1]['total'];
 										    echo '<tr>';
                                             echo '<td>'.$team['name'].'</td>';
-                               				echo '<td>'.$team['score'].'</td>';
+                               				echo '<td>'.$score.'</td>';
                                             echo '<td style="text-align: center;"><button type="button" class="btn btn-success btn-circle" data-toggle="modal" data-player="'.$team['id'].'" data-target="#addBonus"><i class="fa fa-plus"></i></button>   <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-player="'.$team['id'].'" data-target="#addMalus"><i class="fa fa-minus"></i></button></td>';							
 										    echo '</tr>';
 										}
@@ -108,9 +109,9 @@ $causesMalus = getCauses("Malus");
 											<div class="modal-body">
 													<div class="form-group">
 														<select name="causeId" class="form-control">
-															<?php foreach($causesBonus as $cause){?>
+															<?php foreach($causes as $cause){if ($cause['category'] == "Bonus"){?>
 															<option value="<?php echo $cause['id']; ?>"><?php echo $cause["name"]; ?></option>
-															<?php };
+															<?php }};
 															?>
 														</select>
 													</div>
@@ -141,9 +142,9 @@ $causesMalus = getCauses("Malus");
                                         
 											    <div class="form-group">
 													<select name="causeId" class="form-control" onchange="fillValue(this.value)">
-														<?php foreach($causesMalus as $cause){?>
+														<?php foreach($causes as $cause){ if($cause['category'] == "Malus"){?>
 														<option value="<?php echo $cause['id']; ?>"><?php echo $cause["name"]; ?></option>
-														<?php };
+														<?php }};
 														?>
 													</select>
 												</div>

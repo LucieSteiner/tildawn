@@ -57,6 +57,16 @@ function addBonusMalusToTeam($teamId, $cause){
     return mysqli_affected_rows($link);
 }
 
+function getSpecialByTeam($teamId){
+	$link = connect();
+	$res = mysqli_query($link, 'select SUM(scoreImpact) as total from SpecialTeamLog where $teamId='.$teamId.';');
+	return fetch_result($res);
+	}
+function getSpecialAllTeams(){
+	$link = connect();
+	$res = mysqli_query($link, 'select teamId as id, SUM(scoreImpact) as total from SpecialTeamLog group by teamId;');
+	return fetch_result($res);
+	}
 //see if necessary or if getTeamByName/getAllTeams gives all stats
 function getNbMainObjectsFound($teamId){
     $link = connect();

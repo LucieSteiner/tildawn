@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <?php
+error_reporting(E_ALL ^ E_NOTICE); 
 require("../controller/azure.php");
 $players = getPlayers();
 //getPlayers -> (id, amulet, firstname, lastname, team, score)
 
-$causesBonus = getCauses("Bonus");
-$causesMalus = getCauses("Malus");
-
+$causes= getCauses();
+$teams = getTeams();
+$special = getAllPlayerSpecial();
+$specialTeam = getAllTeamSpecial();
 //getCauses -> cause, category, value
 
 //add link to player information
@@ -90,6 +92,7 @@ $causesMalus = getCauses("Malus");
 								    <?php 
 									    
 									    foreach ($players as $player){
+											$score = $special[$player['id'] - 1]['total'] + $player['score'];
 										    echo '<tr>';
                                             if($player['amulet'] != NULL){
 												echo '<td>'.$player['amulet'].'</td>';
@@ -100,8 +103,8 @@ $causesMalus = getCauses("Malus");
                                				echo '<td>'.$player['firstname'].'</td>';
                                             echo '<td>'.$player['lastname'].'</td>';
                                             echo '<td>'.$player['team'].'</td>';
-                                            echo '<td>'.$player['score'].'</td>';
-											echo '<td>'.calculateWeightedScore($player['score'], $player['teamScore']).'</td>';
+                                            echo '<td>'.$score.'</td>';
+											echo '<td>'.calculateWeightedScore($score, $player['teamScore'] + $specialTeam[$player['teamId']-1]['total']).'</td>';
                                             echo '<td style="text-align:center;"><button type="button" class="btn btn-success btn-circle" data-toggle="modal" data-player="'.$player['id'].'" data-target="#addBonus"><i class="fa fa-plus"></i></button>   <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-player="'.$player['id'].'" data-target="#addMalus"><i class="fa fa-minus"></i></button></td>';							
 										    echo '</tr>';
 										}
@@ -124,9 +127,9 @@ $causesMalus = getCauses("Malus");
 											<div class="modal-body">
 													<div class="form-group">
 														<select name="causeId" class="form-control">
-															<?php foreach($causesBonus as $cause){?>
+															<?php foreach($causes as $cause){ if($cause['category'] == "Bonus"){?>
 															<option value="<?php echo $cause['id']; ?>"><?php echo $cause["name"]; ?></option>
-															<?php };
+															<?php }};
 															?>
 														</select>
 													</div>
@@ -157,9 +160,10 @@ $causesMalus = getCauses("Malus");
                                         
 											    <div class="form-group">
 													<select name="causeId" class="form-control" onchange="fillValue(this.value)">
-														<?php foreach($causesMalus as $cause){?>
+														<?php foreach($causes as $cause){ if($cause['category'] == "Malus"){?>
+														
 														<option value="<?php echo $cause['id']; ?>"><?php echo $cause["name"]; ?></option>
-														<?php };
+														<?php } };
 														?>
 													</select>
 												</div>

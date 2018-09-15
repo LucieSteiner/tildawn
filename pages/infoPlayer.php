@@ -3,6 +3,7 @@
 require("../controller/bureau.php");
 $playerInfo = getPlayer($_GET['id']);
 $player = $playerInfo[0];
+$teams = getTeams();
 ?>
 <html lang="en">
 
@@ -125,11 +126,11 @@ $player = $playerInfo[0];
 									</tr>
 									<tr>
 									    <th> Current Score </th>
-										<td> <?php echo $player['score']; ?> </td>
+										<td> <?php $specialPlayerScore =  getPlayerScoreWithSpecial($player); echo $specialPlayerScore;?> </td>
 									</tr>
 									<tr>
 									    <th> Current Weighted Score </th>
-										<td> <?php echo calculateWeightedScore($player['score'], $player['teamScore']); ?> </td>
+										<td> <?php echo calculateWeightedScore($specialPlayerScore, getTeamScoreWithSpecial($teams[$player['teamId']-1]); ?> </td>
 									</tr>
 									<tr>
 									    <th> # of Deaths </th>

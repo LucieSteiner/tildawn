@@ -2,10 +2,10 @@ USE tildawn;
 
 INSERT INTO Teams(id, name, color)
   VALUES
-    (1, "Asile", "bleu"),
+    (1, "Asile", "rouge"),
 	(2, "Usine", "jaune"),
 	(3, "Abattoirs", "vert"),
-	(4, "Caserne", "rouge"),
+	(4, "Caserne", "bleu"),
 	(5, "Zombie", "noir");
 	
 INSERT INTO Players(lastname, firstname, gender, `group`, teamId)
@@ -21,7 +21,6 @@ INSERT INTO Players(lastname, firstname, gender, `group`, teamId)
 	("Burnier", "Lauriane", "F", "La Croisée", 3),
 	("Byrde", "Laura", "F", "Vieux-Mazel", 4),
 	("Chappaz", "Jérémie", "M", "Pierre de Griuns", 4),
-	("Chevalley", "Garance", "F", "La Roselière", 4),
 	("Cisier", "Noah", "M", "La Venoge", 4),
 	("Cloux", "Robin", "M", "La Harpe", 3),
 	("Buffat", "David", "M", "Noirmont gland", 1),
@@ -36,9 +35,8 @@ INSERT INTO Players(lastname, firstname, gender, `group`, teamId)
 	("Fessler", "Yannick", "M", "Noirmont-Gland", 4),
 	("Fluckiger", "Charles", "M", "Brigade de Montbenon", 2),
 	("Flückiger", "Léonard", "M", "Montbenon", 2),
-	("Fontaine", "Guillaume", "M", "TDGL", 3),
+	("Fontaine", "Guillaume", "M", "TDGL", 4),
 	("Garcia Muller", "Daniel", "M", "TDGL", 5),
-	("Gay-Crosier", "Shéridane", "F", "St-Félix saxon", 1),
 	("Gerber", "Vannak", "M", "Brigade scout de Lavaux", 3),
 	("Gilliard", "Patrick", "M", "La Croisée", 3),
 	("Gindroz", "David", "M", "La Croisée", 3),
@@ -65,6 +63,7 @@ INSERT INTO Players(lastname, firstname, gender, `group`, teamId)
 	("Montero", "Nicolas", "M", "Brigade de Sauvabelin", 3),
 	("Mottier", "Maël", "M", "La Venoge", 1),
 	("Muhlethaler", "Aymeric", "M", "La Croisée", 1),
+	("Muhlethaler", "Aude", "F", "La Croisée", 3),
 	("Neu", "Sarah", "F", "Grande Ourse", 5),
 	("Neuenschwander", "Fabio", "M", "Brigade de Montbenon", 2),
 	("Ney", "Lauriane", "F", "Grande Ourse", 5),
@@ -110,8 +109,8 @@ INSERT INTO Players(lastname, firstname, gender, `group`, teamId)
 	
 INSERT INTO Objects(name, value, main)
   VALUES 
-    ("Rack d''antidote", 210, TRUE),
-	("Unité d''ionisation", 210, TRUE),
+    ("Rack d'antidote", 210, TRUE),
+	("Unité d'ionisation", 210, TRUE),
 	("Mélangeur haute pression", 210, TRUE),
 	("Objet central 4", 210, TRUE),
 	("Objet central 5", 210, TRUE),
