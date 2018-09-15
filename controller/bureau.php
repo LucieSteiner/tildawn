@@ -21,7 +21,7 @@ function getArrested($loserId, $winnerId){
 	$valueWinner = 100;
 	
 	$teamId = getPlayerById($loserId)[0]['teamId'];
-	echo $teamId;
+	
 	increaseNbTimesArrested($loserId);
 	increaseNbPlayersArrested($teamId);
 	increaseNbCheatersCaught($winnerId);

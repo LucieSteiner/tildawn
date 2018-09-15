@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <?php 
-error_reporting(E_ALL ^ E_NOTICE); 
 require("../controller/azure.php");
 //getTeams -> name, score
 $teams = getTeams();

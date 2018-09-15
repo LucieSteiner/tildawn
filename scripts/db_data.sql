@@ -111,9 +111,9 @@ INSERT INTO Objects(name, value, main)
   VALUES 
     ("Rack d'antidote", 210, TRUE),
 	("Unité d'ionisation", 210, TRUE),
-	("Mélangeur haute pression", 210, TRUE),
-	("Objet central 4", 210, TRUE),
-	("Objet central 5", 210, TRUE),
+	("Unité de distilation", 210, TRUE),
+	("Prototype", 210, TRUE),
+	("Thermomètre à pression instantanée", 210, TRUE),
 	("Cable 1", 90, FALSE),
 	("Cable 2", 90, FALSE),
 	("Cable 3", 90, FALSE),
@@ -123,7 +123,10 @@ INSERT INTO Objects(name, value, main)
 	("Tuyaux 2", 90, FALSE),
 	("Tuyaux 3", 90, FALSE),
 	("Reposoir", 90, FALSE),
-	("Barette", 90, FALSE);
+	("Tige de soutien", 90, FALSE),
+	("Socle", 90, FALSE),
+	("Potence", 90, FALSE),
+	("Cale", 90, FALSE);
 	
 	
 INSERT INTO Alerts(title, text)
@@ -131,3 +134,4 @@ INSERT INTO Alerts(title, text)
     ("Interruption momentanée du jeu", "Tout le monde en zone NEUTRE. Infos à suivre."),
 	("ARRET DU JEU", "Tout le monde au point de rassemblement. Restez groupés!");
 	
+

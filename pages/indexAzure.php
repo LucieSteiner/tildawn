@@ -1,6 +1,5 @@
 <?php
 require("../controller/azure.php");
-error_reporting(E_ALL ^ E_NOTICE); 
 //getBestTeamScore()
 //getBestPlayerScore()
 //getNbActiveAlerts()

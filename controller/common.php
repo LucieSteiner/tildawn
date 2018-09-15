@@ -14,7 +14,7 @@ function getPlayer($playerId){
 }
 
 function calculateWeightedScore($playerScore, $teamScore){
-	$weightedScore = (0.5 * $playerScore) + (0.5 * $teamScore);
+	$weightedScore = round((0.5 * $playerScore) + (0.5 * $teamScore));
 	return $weightedScore;
 }
 
@@ -37,7 +37,7 @@ function topPlayers($nb, $players, $teams, $specialTeam, $special){
 	$lastname = array();
 	$team = array();
 	foreach ($players as $player){
-		$to_sort[$player['id']] = calculateWeightedScore($special[$player['id']-1]['total'], $specialTeam[$player['teamId']-1]['total']+$teams[$player['teamId']-1]['score']);
+		$to_sort[$player['id']] = calculateWeightedScore($special[$player['id']-1]['total'] + $player['score'], $specialTeam[$player['teamId']-1]['total']+$teams[$player['teamId']-1]['score']);
 		$firstname[$player['id']] = $player['firstname'];
 		$lastname[$player['id']] = $player['lastname'];
 		$team[$player['id']] = $player['team'];

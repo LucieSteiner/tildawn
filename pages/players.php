@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php
-error_reporting(E_ALL ^ E_NOTICE); 
+//error_reporting(E_ALL ^ E_NOTICE); 
 require("../controller/azure.php");
 $players = getPlayers();
 //getPlayers -> (id, amulet, firstname, lastname, team, score)
@@ -8,6 +8,7 @@ $players = getPlayers();
 $causes= getCauses();
 $teams = getTeams();
 $special = getAllPlayerSpecial();
+
 $specialTeam = getAllTeamSpecial();
 //getCauses -> cause, category, value
 

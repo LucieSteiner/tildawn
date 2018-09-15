@@ -23,8 +23,8 @@ function getAllObjects(){
         array("id" => 12, "name" => "Piège à loup","value" => 90, "foundby" => "-", "main" => 0)
     );*/
 
-    $link = connect();
-    $res = mysqli_query($link, 'select objects.id as id, objects.name as name, value, teams.name as foundby, `main` from objects left join teams on objects.teamId = teams.id;');
+    //$GLOBALS['link'] = connect();
+    $res = mysqli_query($GLOBALS['link'], 'select objects.id as id, objects.name as name, value, teams.name as foundby, `main` from objects left join teams on objects.teamId = teams.id;');
 
     return fetch_result($res);
 
@@ -42,41 +42,41 @@ function getObjectById($objectId){
     }
     return null;*/
 
-    $link = connect();
-    $res = mysqli_query($link, 'select objects.id as id, objects.name as name, value, teams.name as foundby, `main` from objects left join teams on objects.teamId = teams.id where objects.id ='. $objectId .';');
+    //$GLOBALS['link'] = connect();
+    $res = mysqli_query($GLOBALS['link'], 'select objects.id as id, objects.name as name, value, teams.name as foundby, `main` from objects left join teams on objects.teamId = teams.id where objects.id ='. $objectId .';');
 
     return fetch_result($res);
 }
 
 function countFoundObjects(){
-	$link = connect();
-    $res = mysqli_query($link, 'select count(*) as nb from objects where found=1;');
+	//$GLOBALS['link'] = connect();
+    $res = mysqli_query($GLOBALS['link'], 'select count(*) as nb from objects where found=1;');
 
     return fetch_result($res);
 }
 //returns True if object edition succeeded, False otherwise
 //$newOwner must be teamId
 function editObject($objectId, $newName, $newValue, $newOwner){
-    $link = connect();
+    //$GLOBALS['link'] = connect();
 	$found = 0;
 	if($newOwner != NULL){
 		$found = 1;
-		mysqli_query($link, 'update objects set `name`="'. $newName .'", `value`='. $newValue .', `found`='. $found .', `teamId`='.$newOwner.' where `id`='. $objectId .';') or die(mysqli_error($link));
+		mysqli_query($GLOBALS['link'], 'update objects set `name`="'. $newName .'", `value`='. $newValue .', `found`='. $found .', `teamId`='.$newOwner.' where `id`='. $objectId .';') or die(mysqli_error($GLOBALS['link']));
 	}
     else{
-		mysqli_query($link, 'update objects set `name`="'. $newName .'", `value`='. $newValue .', `found`='. $found .', `teamId`=NULL where `id`='. $objectId .';') or die(mysqli_error($link));
+		mysqli_query($GLOBALS['link'], 'update objects set `name`="'. $newName .'", `value`='. $newValue .', `found`='. $found .', `teamId`=NULL where `id`='. $objectId .';') or die(mysqli_error($GLOBALS['link']));
 	}
     
 
-    return mysqli_affected_rows($link);
+    return mysqli_affected_rows($GLOBALS['link']);
 }
 
 //returns true if creation succeeded, false otherwise
 function createNewObject($name, $value, $foundby, $main){
-    $link = connect();
-    mysqli_query($link, 'insert into object(`name`, `value`, `foundby`, `main`) values("'. $name .'", '. $value .', '. $foundby .', '. $main .');');
+    //$GLOBALS['link'] = connect();
+    mysqli_query($GLOBALS['link'], 'insert into object(`name`, `value`, `foundby`, `main`) values("'. $name .'", '. $value .', '. $foundby .', '. $main .');');
 
-    return mysqli_affected_rows($link);
+    return mysqli_affected_rows($GLOBALS['link']);
 }
 
 ?>

@@ -130,7 +130,7 @@ $teams = getTeams();
 									</tr>
 									<tr>
 									    <th> Current Weighted Score </th>
-										<td> <?php echo calculateWeightedScore($specialPlayerScore, getTeamScoreWithSpecial($teams[$player['teamId']-1]); ?> </td>
+										<td> <?php echo calculateWeightedScore($specialPlayerScore, getTeamScoreWithSpecial($teams[$player['teamId']-1])); ?> </td>
 									</tr>
 									<tr>
 									    <th> # of Deaths </th>

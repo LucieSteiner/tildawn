@@ -36,11 +36,11 @@ function getAllPlayers(){
         array('id' => 28,'amulet' => '11111', 'firstname' => 'Bob', 'lastname' => 'Bob', 'team' => 'Asile', 'score' => 200, 'gender' => 'male', 'group' => 'Plantour', 'nbDeaths' => 14, 'nbKills' => 3, 'nbOwnLivesTaken' => 12, 'nbEnemyLivesGiven' => 3, 'nbTimesArrested' => 0, 'nbCheatersCaught' => 2)
     );*/
 
-    $link = connect();
+    //$GLOBALS['link'] = connect();
 	//trop long, à voir
-    $res = mysqli_query($link, 'select players.id as id, amulet, firstname, lastname, teams.name as team, players.teamId as teamId, players.score as score, teams.score as teamScore, gender, `group`, nbDeaths, nbKills, nbOwnLivesTaken, nbEnemyLivesGiven, nbTimesArrested, NbCheatersCaught from players INNER JOIN teams ON players.teamId = teams.id;');
-    //$res = mysqli_query($link, 'select id, amulet, firstname, lastname, teamId as team, score, gender, `group`, nbDeaths, nbKills, nbOwnLivesTaken, nbEnemyLivesGiven, nbTimesArrested, NbCheatersCaught from players;');
-    //$res = mysqli_query($link, 'select * from players;');
+    $res = mysqli_query($GLOBALS['link'], 'select players.id as id, amulet, firstname, lastname, teams.name as team, players.teamId as teamId, players.score as score, teams.score as teamScore, gender, `group`, nbDeaths, nbKills, nbOwnLivesTaken, nbEnemyLivesGiven, nbTimesArrested, NbCheatersCaught from players INNER JOIN teams ON players.teamId = teams.id;');
+    //$res = mysqli_query($GLOBALS['link'], 'select id, amulet, firstname, lastname, teamId as team, score, gender, `group`, nbDeaths, nbKills, nbOwnLivesTaken, nbEnemyLivesGiven, nbTimesArrested, NbCheatersCaught from players;');
+    //$res = mysqli_query($GLOBALS['link'], 'select * from players;');
     return fetch_result($res);
 }
 
@@ -55,8 +55,8 @@ function getPlayerById($playerId){
         }
     }*/
 
-    $link = connect();
-    $res = mysqli_query($link, "select players.id as id, amulet, firstname, lastname, teams.name as team, players.teamId as teamId, players.score as score, teams.score as teamScore, gender, `group`, nbDeaths, nbKills, nbOwnLivesTaken, nbEnemyLivesGiven, nbTimesArrested, nbCheatersCaught from players INNER JOIN teams ON players.teamId = teams.id WHERE players.id = '". $playerId . "';");
+    //$GLOBALS['link'] = connect();
+    $res = mysqli_query($GLOBALS['link'], "select players.id as id, amulet, firstname, lastname, teams.name as team, players.teamId as teamId, players.score as score, teams.score as teamScore, gender, `group`, nbDeaths, nbKills, nbOwnLivesTaken, nbEnemyLivesGiven, nbTimesArrested, nbCheatersCaught from players INNER JOIN teams ON players.teamId = teams.id WHERE players.id = '". $playerId . "';");
     
 
     return fetch_result($res);
@@ -73,24 +73,24 @@ function getPlayerIdByAmulet($amulet){
         }
     }*/
 
-    $link = connect();
-    $res = mysqli_query($link, "select id from players where `amulet`='$amulet';") or die(mysqli_error($link));
-    echo mysqli_error($link);
+    //$GLOBALS['link'] = connect();
+    $res = mysqli_query($GLOBALS['link'], "select id from players where `amulet`='$amulet';") or die(mysqli_error($GLOBALS['link']));
+    echo mysqli_error($GLOBALS['link']);
     return fetch_result($res);
 }
 function getPlayersByTeam(){
-	$link = connect();
+	//$GLOBALS['link'] = connect();
 	$result = array();
 	for($i = 1; $i <= 5; $i++){
-		$res = mysqli_query($link, "select players.id as id, amulet, firstname, lastname, teams.name as team, players.teamId as teamId, players.score as score, teams.score as teamScore, gender, `group`, nbDeaths, nbKills, nbOwnLivesTaken, nbEnemyLivesGiven, nbTimesArrested, nbCheatersCaught from players INNER JOIN teams ON players.teamId = teams.id WHERE players.teamId = '". $i . "';");
+		$res = mysqli_query($GLOBALS['link'], "select players.id as id, amulet, firstname, lastname, teams.name as team, players.teamId as teamId, players.score as score, teams.score as teamScore, gender, `group`, nbDeaths, nbKills, nbOwnLivesTaken, nbEnemyLivesGiven, nbTimesArrested, nbCheatersCaught from players INNER JOIN teams ON players.teamId = teams.id WHERE players.teamId = '". $i . "';");
 		array_push($result, fetch_result($res));
 	}
     return $result;
 
 }
 function countPlayersByTeam(){
-	$link = connect();
-    $res = mysqli_query($link, "select teamId, count(*) as nb from players group by teamId");
+	//$GLOBALS['link'] = connect();
+    $res = mysqli_query($GLOBALS['link'], "select teamId, count(*) as nb from players group by teamId");
     
 
     return fetch_result($res);
@@ -99,18 +99,18 @@ function countPlayersByTeam(){
 //points can be positive or negative
 //another function should be called to increase/decrease counters
 function editPlayerScore($playerId, $points, $cause){
-    $link = connect();
-    mysqli_query($link, 'update players set `score`=`score` + '. $points .' where `id`='. $playerId .';');
+    //$GLOBALS['link'] = connect();
+    mysqli_query($GLOBALS['link'], 'update players set `score`=`score` + '. $points .' where `id`='. $playerId .';');
 
-    return mysqli_affected_rows($link);
+    return mysqli_affected_rows($GLOBALS['link']);
 }
 //returns true if edition succeeded, false otherwise
 function setPlayerAmulet($playerId, $amulet){
-    $link = connect();
+    //$GLOBALS['link'] = connect();
 	
-    mysqli_query($link, 'update players set `amulet`="'. $amulet .'" where `id`='. $playerId.';');
+    mysqli_query($GLOBALS['link'], 'update players set `amulet`="'. $amulet .'" where `id`='. $playerId.';');
 
-    return mysqli_affected_rows($link);
+    return mysqli_affected_rows($GLOBALS['link']);
 }
 //returns true if edition succeeded, false otherwise
 //points can be positive or negative
@@ -118,30 +118,35 @@ function setPlayerAmulet($playerId, $amulet){
 function addBonusMalusToPlayer($playerId, $cause){
     //log or other action before editing player's score
 	//ajouter une entrée à la table specialplayerlog
-	$link = connect();
+	//$GLOBALS['link'] = connect();
 	
-	mysqli_query($link, 'insert into specialPlayerLog(causeId, playerId, scoreImpact) VALUES ('.$cause['id'].', '.$playerId.', '.$cause['value'].');') or die(mysqli_error($link));
-    return mysqli_affected_rows($link);
+	mysqli_query($GLOBALS['link'], 'insert into specialPlayerLog(causeId, playerId, scoreImpact) VALUES ('.$cause['id'].', '.$playerId.', '.$cause['value'].');') or die(mysqli_error($GLOBALS['link']));
+    return mysqli_affected_rows($GLOBALS['link']);
 }
 
 function getSpecialByPlayer($playerId){
-	$link = connect();
-	$res = mysqli_query($link, 'select SUM(scoreImpact) as total from SpecialPlayerLog where $playerId='.$playerId.';');
+	//$GLOBALS['link'] = connect();
+	$res = mysqli_query($GLOBALS['link'], 'select SUM(scoreImpact) as total from SpecialPlayerLog where playerId='.$playerId.';');
+	if($res == False){
+		return array("total"=>0);
+	}
 	return fetch_result($res);
 }
 function getSpecialAllPlayers(){
-	$link = connect();
-	$res = mysqli_query($link, 'select playerId as id, SUM(scoreImpact) as total from SpecialPlayerLog group by playerId;');
+	//$GLOBALS['link'] = connect();
+	$res = mysqli_query($GLOBALS['link'], 'select players.id as id, SUM(scoreImpact) as total from SpecialPlayerLog RIGHT JOIN players ON SpecialPlayerLog.playerId = players.id group by players.id ;');
+
+	
 	return fetch_result($res);
 }
 
 
 function changePlayerTeam($loserId, $teamWinnerId){
-	$link = connect();
+	//$GLOBALS['link'] = connect();
 	
-    mysqli_query($link, 'update players set `teamId`='. $teamWinnerId .' where `id`='. $loserId.';');
+    mysqli_query($GLOBALS['link'], 'update players set `teamId`='. $teamWinnerId .' where `id`='. $loserId.';');
 
-    return mysqli_affected_rows($link);
+    return mysqli_affected_rows($GLOBALS['link']);
 	
 }
 /*
@@ -159,64 +164,64 @@ Compteurs:
 - nbObjectsFound
 */
 function increaseNbOwnLivesTaken($playerId, $nbLives){
-    $link = connect();
-    mysqli_query($link, 'update players set `nbOwnLivesTaken`=`nbOwnLivesTaken`+'. $nbLives .' where `id`='. $playerId .';');
+    //$GLOBALS['link'] = connect();
+    mysqli_query($GLOBALS['link'], 'update players set `nbOwnLivesTaken`=`nbOwnLivesTaken`+'. $nbLives .' where `id`='. $playerId .';');
 
-    return mysqli_affected_rows($link);
+    return mysqli_affected_rows($GLOBALS['link']);
 }
 function increaseNbEnemyLivesGiven($playerId, $nbLives){
-    $link = connect();
-    mysqli_query($link, 'update players set `nbEnemyLivesGiven`=`nbEnemyLivesGiven`+'. $nbLives .' where `id`='. $playerId .';');
+    //$GLOBALS['link'] = connect();
+    mysqli_query($GLOBALS['link'], 'update players set `nbEnemyLivesGiven`=`nbEnemyLivesGiven`+'. $nbLives .' where `id`='. $playerId .';');
 
-    return mysqli_affected_rows($link);
+    return mysqli_affected_rows($GLOBALS['link']);
 }
 function increaseNbKills($playerId){
-    $link = connect();
-    mysqli_query($link, 'update players set `nbKills`=`nbKills`+1 where `id`='. $playerId .';');
+    //$GLOBALS['link'] = connect();
+    mysqli_query($GLOBALS['link'], 'update players set `nbKills`=`nbKills`+1 where `id`='. $playerId .';');
 
-    return mysqli_affected_rows($link);
+    return mysqli_affected_rows($GLOBALS['link']);
 }
 function increaseNbDeaths($playerId){
-    $link = connect();
-    mysqli_query($link, 'update players set `nbDeaths`=`nbDeaths`+1 where `id`='. $playerId .';');
+    //$GLOBALS['link'] = connect();
+    mysqli_query($GLOBALS['link'], 'update players set `nbDeaths`=`nbDeaths`+1 where `id`='. $playerId .';');
 
-    return mysqli_affected_rows($link);
+    return mysqli_affected_rows($GLOBALS['link']);
 }
 function increaseNbTimesArrested($loserId){
-    $link = connect();
-    mysqli_query($link, 'update players set `nbTimesArrested`=`nbTimesArrested`+1 where `id`='. $loserId .';');
+    //$GLOBALS['link'] = connect();
+    mysqli_query($GLOBALS['link'], 'update players set `nbTimesArrested`=`nbTimesArrested`+1 where `id`='. $loserId .';');
 
-    return mysqli_affected_rows($link);
+    return mysqli_affected_rows($GLOBALS['link']);
 }
 function increaseNbCheatersCaught($winnerId){
-    $link = connect();
-    mysqli_query($link, 'update players set `nbCheatersCaught`=`nbCheatersCaught`+1 where `id`='. $winnerId .';');
+    //$GLOBALS['link'] = connect();
+    mysqli_query($GLOBALS['link'], 'update players set `nbCheatersCaught`=`nbCheatersCaught`+1 where `id`='. $winnerId .';');
 
-    return mysqli_affected_rows($link);
+    return mysqli_affected_rows($GLOBALS['link']);
 }
 function increaseNbAmuletsTaken($playerId){
-    $link = connect();
-    mysqli_query($link, 'update players set `nbAmuletsTaken`=`nbAmuletsTaken`+1 where `id`='. $playerId .';');
+    //$GLOBALS['link'] = connect();
+    mysqli_query($GLOBALS['link'], 'update players set `nbAmuletsTaken`=`nbAmuletsTaken`+1 where `id`='. $playerId .';');
 
-    return mysqli_affected_rows($link);
+    return mysqli_affected_rows($GLOBALS['link']);
 }
 function increaseNbTimesTransformed($loserId){
-    $link = connect();
-    mysqli_query($link, 'update players set `nbTimesTransformed`=`nbTimesTransformed`+1 where `id`='. $loserId .';');
+    //$GLOBALS['link'] = connect();
+    mysqli_query($GLOBALS['link'], 'update players set `nbTimesTransformed`=`nbTimesTransformed`+1 where `id`='. $loserId .';');
 
-    return mysqli_affected_rows($link);
+    return mysqli_affected_rows($GLOBALS['link']);
 }
 function increaseNbPlayersTransformed($winnerId){
-    $link = connect();
-    mysqli_query($link, 'update players set `nbPlayersTransformed`=`nbPlayersTransformed`+1 where `id`='. $winnerId .';');
+    //$GLOBALS['link'] = connect();
+    mysqli_query($GLOBALS['link'], 'update players set `nbPlayersTransformed`=`nbPlayersTransformed`+1 where `id`='. $winnerId .';');
 
-    return mysqli_affected_rows($link);
+    return mysqli_affected_rows($GLOBALS['link']);
 }
 function increaseNbObjectsFound($playerId){
-    $link = connect();
-    mysqli_query($link, 'update players set `nbObjectsFound`=`nbObjectsFound`+1 where `id`='. $playerId .';');
+    //$GLOBALS['link'] = connect();
+    mysqli_query($GLOBALS['link'], 'update players set `nbObjectsFound`=`nbObjectsFound`+1 where `id`='. $playerId .';');
 
-    return mysqli_affected_rows($link);
+    return mysqli_affected_rows($GLOBALS['link']);
 }
 
 

@@ -15,13 +15,14 @@ define("USER", "root");
 define("PWD", "");
 define("DB", "tildawn");
 
+
 /* Mysql related functions */
 function connect() {
 	$link = mysqli_connect(HOST, USER, PWD, DB);
 	mysqli_set_charset($link, "utf8");
     return $link;
 }
-
+$link = connect();
 function fetch_result($res) {
 	$result = array();
 	if($res != False){
