@@ -10,10 +10,10 @@
 
 
 /* Constants */
-define("HOST", "localhost");
-define("USER", "root");
-define("PWD", "");
-define("DB", "tildawn");
+define("HOST", 'localhost');
+define("USER", 'tildawn-mysql');
+define("PWD", 'uum7xeeR');
+define("DB", 'tildawn');
 
 
 /* Mysql related functions */
@@ -30,7 +30,7 @@ function fetch_result($res) {
             $result[] = $row;
         }
 	}else{
-		echo "No result";
+		//echo "No result";
 	}
     return $result;
 }

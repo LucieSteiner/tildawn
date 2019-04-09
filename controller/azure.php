@@ -9,11 +9,11 @@ require("../controller/common.php");
 //Dashboard
 function getBestTeamScore(){
 	$special = getAllTeamSpecial();
-	
-	$max = $special[0]['total'];
+	$teams = getAllTeams();	
+	$max = $special[0]['total'] + $teams[0]['score'];
 	for($i = 0; $i < count($special); $i++){
-		if($special[$i]['total'] > $max){
-			$max = $special[$i]['total'];
+		if(($special[$i]['total']+ $teams[$i]['score']) > $max){
+			$max = $special[$i]['total'] + $teams[$i]['score'];
 		}
 		
 	}
@@ -25,10 +25,11 @@ function getBestTeamScore(){
 //Dashboard
 function getBestPlayerScore(){
 	$special = getAllPlayerSpecial();
-	$max = $special[0]['total'];
+	$players = getAllPlayers();
+	$max = $special[0]['total']+$players[0]['score'];
 	for($i = 0; $i < count($special); $i++){
-		if($special[$i]['total'] > $max){
-			$max = $special[$i]['total'];
+		if(($special[$i]['total']+$players[$i]['score']) > $max){
+			$max = $special[$i]['total']+$players[$i]['score'];
 		}
 	}
 	return $max;
