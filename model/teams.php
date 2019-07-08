@@ -53,13 +53,13 @@ function addBonusMalusToTeam($teamId, $cause){
     //log or other action before editing player's score
     //$GLOBALS['link'] = connect();
 	
-	mysqli_query($GLOBALS['link'], 'insert into specialTeamLog(causeId, teamId, scoreImpact) VALUES ('.$cause['id'].', '.$teamId.', '.$cause['value'].');') or die(mysqli_error($GLOBALS['link']));
+	mysqli_query($GLOBALS['link'], 'insert into specialteamlog(causeId, teamId, scoreImpact) VALUES ('.$cause['id'].', '.$teamId.', '.$cause['value'].');') or die(mysqli_error($GLOBALS['link']));
     return mysqli_affected_rows($GLOBALS['link']);
 }
 
 function getSpecialByTeam($teamId){
 	//$GLOBALS['link'] = connect();
-	$res = mysqli_query($GLOBALS['link'], 'select SUM(scoreImpact) as total from SpecialTeamLog where teamId='.$teamId.';');
+	$res = mysqli_query($GLOBALS['link'], 'select SUM(scoreImpact) as total from specialteamlog where teamId='.$teamId.';');
 	if($res == False){
 		return array("total"=>0);
 	}
@@ -68,7 +68,7 @@ function getSpecialByTeam($teamId){
 	}
 function getSpecialAllTeams(){
 	//$GLOBALS['link'] = connect();
-	$res = mysqli_query($GLOBALS['link'], 'select teams.id as id, SUM(scoreImpact) as total from SpecialTeamLog RIGHT JOIN teams ON specialTeamLog.teamId = teams.id group by teams.id;');
+	$res = mysqli_query($GLOBALS['link'], 'select teams.id as id, SUM(scoreImpact) as total from specialteamlog RIGHT JOIN teams ON specialteamlog.teamId = teams.id group by teams.id;');
 	return fetch_result($res);
 	}
 //see if necessary or if getTeamByName/getAllTeams gives all stats

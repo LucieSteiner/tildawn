@@ -3,7 +3,7 @@ CREATE SCHEMA tildawn;
 USE tildawn;
 
 
-CREATE TABLE Teams (
+CREATE TABLE teams (
     id INT NOT NULL AUTO_INCREMENT,
 	name VARCHAR(16) NOT NULL UNIQUE,
 	color VARCHAR(8) NOT NULL UNIQUE,
@@ -20,7 +20,7 @@ CREATE TABLE Teams (
 	PRIMARY KEY(id)
 );
 
-CREATE TABLE Players (
+CREATE TABLE players (
     id INT NOT NULL AUTO_INCREMENT,
     amulet VARCHAR(5) UNIQUE,
 	firstname VARCHAR(32) NOT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE Players (
 	FOREIGN KEY(teamId) REFERENCES Teams(id)
 );
 
-CREATE TABLE Objects (
+CREATE TABLE objects (
     id INT NOT NULL AUTO_INCREMENT,
 	name VARCHAR(32) NOT NULL UNIQUE,
 	`found` BOOLEAN NOT NULL DEFAULT FALSE, 
@@ -58,7 +58,7 @@ CREATE TABLE Objects (
 	FOREIGN KEY(teamId) REFERENCES Teams(id)
 );
 
-CREATE TABLE Causes (
+CREATE TABLE causes (
     id INT NOT NULL AUTO_INCREMENT,
 	name VARCHAR(32) NOT NULL,
 	category ENUM('Bonus','Malus'),
@@ -68,7 +68,7 @@ CREATE TABLE Causes (
 
 );
 
-CREATE TABLE SpecialTeamLog (
+CREATE TABLE specialteamlog (
     id INT NOT NULL AUTO_INCREMENT,
 	causeId INT NOT NULL,
 	teamId INT NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE SpecialTeamLog (
 	FOREIGN KEY(teamId) REFERENCES Teams(id)
 );
 
-CREATE TABLE SpecialPlayerLog (
+CREATE TABLE specialplayerlog (
     id INT NOT NULL AUTO_INCREMENT,
 	causeId INT NOT NULL,
 	playerId INT NOT NULL, 
@@ -90,7 +90,7 @@ CREATE TABLE SpecialPlayerLog (
 	FOREIGN KEY(playerId) REFERENCES Players(id)
 );
 
-CREATE TABLE Alerts (
+CREATE TABLE alerts (
     id INT NOT NULL AUTO_INCREMENT,
 	title VARCHAR(32),
 	text VARCHAR(255),
@@ -99,7 +99,7 @@ CREATE TABLE Alerts (
 	PRIMARY KEY(id)
 );
 
-CREATE TABLE Messages (
+CREATE TABLE messages (
     id INT NOT NULL AUTO_INCREMENT,
 	title VARCHAR(32),
 	text VARCHAR(255),

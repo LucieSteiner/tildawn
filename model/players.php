@@ -120,13 +120,13 @@ function addBonusMalusToPlayer($playerId, $cause){
 	//ajouter une entrée à la table specialplayerlog
 	//$GLOBALS['link'] = connect();
 	
-	mysqli_query($GLOBALS['link'], 'insert into specialPlayerLog(causeId, playerId, scoreImpact) VALUES ('.$cause['id'].', '.$playerId.', '.$cause['value'].');') or die(mysqli_error($GLOBALS['link']));
+	mysqli_query($GLOBALS['link'], 'insert into specialplayerlog(causeId, playerId, scoreImpact) VALUES ('.$cause['id'].', '.$playerId.', '.$cause['value'].');') or die(mysqli_error($GLOBALS['link']));
     return mysqli_affected_rows($GLOBALS['link']);
 }
 
 function getSpecialByPlayer($playerId){
 	//$GLOBALS['link'] = connect();
-	$res = mysqli_query($GLOBALS['link'], 'select SUM(scoreImpact) as total from SpecialPlayerLog where playerId='.$playerId.';');
+	$res = mysqli_query($GLOBALS['link'], 'select SUM(scoreImpact) as total from specialplayerlog where playerId='.$playerId.';');
 	if($res == False){
 		return array("total"=>0);
 	}
@@ -134,7 +134,7 @@ function getSpecialByPlayer($playerId){
 }
 function getSpecialAllPlayers(){
 	//$GLOBALS['link'] = connect();
-	$res = mysqli_query($GLOBALS['link'], 'select players.id as id, SUM(scoreImpact) as total from SpecialPlayerLog RIGHT JOIN players ON SpecialPlayerLog.playerId = players.id group by players.id ;');
+	$res = mysqli_query($GLOBALS['link'], 'select players.id as id, SUM(scoreImpact) as total from specialplayerlog RIGHT JOIN players ON specialplayerlog.playerId = players.id group by players.id ;');
 
 	
 	return fetch_result($res);

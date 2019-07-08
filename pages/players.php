@@ -7,8 +7,8 @@ $players = getPlayers();
 
 $causes= getCauses();
 $teams = getTeams();
-$special = getAllPlayerSpecial();
-
+//$special = getAllPlayerSpecial();
+//print_r($special);
 $specialTeam = getAllTeamSpecial();
 //getCauses -> cause, category, value
 
@@ -93,7 +93,7 @@ $specialTeam = getAllTeamSpecial();
 								    <?php 
 									    
 									    foreach ($players as $player){
-											$score = $special[$player['id'] - 1]['total'] + $player['score'];
+											$score = getPlayerScoreWithSpecial($player);
 										    echo '<tr>';
                                             if($player['amulet'] != NULL){
 												echo '<td>'.$player['amulet'].'</td>';
